@@ -26,7 +26,7 @@
         <activity android:name=".WeeklyScheduleActivity" />
         <activity android:name=".CalendarActivity" />
         <activity android:name=".AbsenceActivity" />
-        <activity android:name=".AbsenceActivity" />
+        <activity android:name=".TeacherActivity" />
     </application>
 
 </manifest>
