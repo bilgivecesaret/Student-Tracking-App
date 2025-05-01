@@ -1,6 +1,5 @@
 package com.example.studenttrackingapp;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.*;
@@ -10,13 +9,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.*;
 
 import java.util.List;
 
 public class MyBooksFragment extends Fragment {
 
-    private ArrayAdapter<DataRepository.Book> adapter;
-    private ListView listView;
+    private RecyclerView recyclerView;
+    private BookAdapter adapter;
+    private List<DataRepository.Book> bookList;
 
     public MyBooksFragment() {
         // Zorunlu boş constructor
@@ -30,30 +31,37 @@ public class MyBooksFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        listView = view.findViewById(R.id.booksListView);
+        recyclerView = view.findViewById(R.id.booksRecyclerView);
         Button addBookButton = view.findViewById(R.id.addBookButton);
 
-        adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1);
-        listView.setAdapter(adapter);
+        bookList = DataRepository.getInstance().getBooks();
+        adapter = new BookAdapter(bookList, book -> {
+            Intent intent = new Intent(getActivity(), TopicsListActivity.class);
+            intent.putExtra("bookTitle", book.getTitle());
+            startActivity(intent);
+        });
 
-        refreshBookList();
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(adapter);
+
+        // Swipe-to-delete desteği
+        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                int position = viewHolder.getAdapterPosition();
+                DataRepository.getInstance().removeBook(position);
+                adapter.notifyItemRemoved(position);
+                Toast.makeText(getContext(), "Book deleted", Toast.LENGTH_SHORT).show();
+            }
+        };
+        new ItemTouchHelper(simpleCallback).attachToRecyclerView(recyclerView);
 
         addBookButton.setOnClickListener(v -> showAddBookDialog());
-
-        listView.setOnItemClickListener((parent, view1, position, id) -> {
-            DataRepository.Book selectedBook = adapter.getItem(position);
-            if (selectedBook != null) {
-                Intent intent = new Intent(getActivity(), TopicsListActivity.class);
-                intent.putExtra("bookTitle", selectedBook.title);
-                startActivity(intent);
-            }
-        });
-    }
-
-    private void refreshBookList() {
-        adapter.clear();
-        List<DataRepository.Book> books = DataRepository.getInstance().getBooks();
-        adapter.addAll(books);
     }
 
     private void showAddBookDialog() {
@@ -67,9 +75,9 @@ public class MyBooksFragment extends Fragment {
         builder.setPositiveButton("Add", (dialog, which) -> {
             String title = input.getText().toString().trim();
             if (!title.isEmpty()) {
-                DataRepository.Book newBook = new DataRepository.Book(title);
+                DataRepository.Book newBook = new DataRepository.Book(title, "Author Name");
                 DataRepository.getInstance().addBook(newBook);
-                refreshBookList();
+                adapter.notifyItemInserted(bookList.size() - 1);
             }
         });
 

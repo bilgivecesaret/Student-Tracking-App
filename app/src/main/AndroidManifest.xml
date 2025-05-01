@@ -21,6 +21,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".LoginActivity"></activity>
         <activity android:name=".MyBooksActivity" />
         <activity android:name=".StudentDetailActivity" />
         <activity android:name=".WeeklyScheduleActivity" />
@@ -29,6 +30,7 @@
         <activity android:name=".TeacherActivity" />
         <activity android:name=".SubjectsListActivity" />
         <activity android:name=".TopicsListActivity" />
+        <activity android:name=".StudentHomeActivity" />
     </application>
 
 </manifest>

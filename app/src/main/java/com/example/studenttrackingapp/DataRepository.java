@@ -12,8 +12,10 @@ public class DataRepository {
 
     private DataRepository() {
         books = new ArrayList<>();
-        books.add(new Book("Math"));  // Örnek kitap
-        topicsByBook.put("Math", new ArrayList<>(Arrays.asList("Numbers", "Sets")));
+
+        // Örnek kitaplar (isteğe bağlı)
+        books.add(new Book("Math", "Author Name"));  // Pass both title and author
+
     }
 
     public static DataRepository getInstance() {
@@ -23,69 +25,86 @@ public class DataRepository {
         return instance;
     }
 
-    // Book class
-    public static class Book {
-        public String title;
 
-        public Book(String title) {
+    public static class Book {  // Make Book static
+        private String title;
+        private String author;
+
+        // Constructor with two parameters
+        public Book(String title, String author) {
             this.title = title;
+            this.author = author;
         }
 
-        @Override
-        public String toString() {
+        // Getter for title
+        public String getTitle() {
             return title;
+        }
+
+        // Getter for author
+        public String getAuthor() {
+            return author;
         }
     }
 
-    // Kitapları döner
+
+
+
+
     public List<Book> getBooks() {
+        List<Book> books = new ArrayList<>();
+        DataRepository.Book newBook = new DataRepository.Book("Math", "Author Name");
+        books.add(newBook);
         return books;
     }
 
-    // Yeni kitap ekler
     public void addBook(Book book) {
         books.add(book);
         topicsByBook.putIfAbsent(book.title, new ArrayList<>());
     }
 
-    // Belirli bir kitaba ait konuları döner
+    public void removeBook(int index) {
+        if (index >= 0 && index < books.size()) {
+            books.remove(index);
+        }
+    }
+
+
     public List<String> getTopicsForBook(String bookName) {
         return topicsByBook.getOrDefault(bookName, new ArrayList<>());
     }
 
-    // Belirli bir kitaba konu ekler
     public void addTopicToBook(String bookName, String topic) {
-        topicsByBook.putIfAbsent(bookName, new ArrayList<>());
         topicsByBook.get(bookName).add(topic);
     }
 
-    // Öğrenciye konu atar
-    public void assignTopicToStudent(String studentName, String topic, String book, String dateRange) {
+    public void assignTopicToStudent(String studentName, String topic, String book, String dateRange, boolean isCompleted) {
         List<StudentTopicAssignment> assignments = studentTopicMap.getOrDefault(studentName, new ArrayList<>());
-        assignments.add(new StudentTopicAssignment(book, topic, dateRange));
+        assignments.add(new StudentTopicAssignment(book, topic, dateRange, isCompleted));
         studentTopicMap.put(studentName, assignments);
     }
 
-    // Öğrenciye atanmış konuları döner
     public List<StudentTopicAssignment> getAssignmentsForStudent(String studentName) {
         return studentTopicMap.getOrDefault(studentName, new ArrayList<>());
     }
 
-    // Nested class: Öğrenciye atanan konu bilgisi
+    // Nested class to hold assignment info
     public static class StudentTopicAssignment {
         public String book;
         public String topic;
         public String dateRange;
+        public boolean isCompleted;
 
-        public StudentTopicAssignment(String book, String topic, String dateRange) {
+        public StudentTopicAssignment(String book, String topic, String dateRange, boolean isCompleted) {
             this.book = book;
             this.topic = topic;
             this.dateRange = dateRange;
+            this.isCompleted = isCompleted;
         }
 
         @Override
         public String toString() {
-            return topic + " (" + book + ") - " + dateRange;
+            return topic + " (" + book + ") - " + dateRange + (isCompleted ? " ✓" : " ✗");
         }
     }
 }
