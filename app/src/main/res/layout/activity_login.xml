@@ -3,29 +3,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/background_image"
     android:padding="32dp"
-    android:gravity="center">
+    android:gravity="top">
 
     <EditText
         android:id="@+id/usernameEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Username"
-        android:inputType="text" />
+        android:hint="@string/username"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:textColorHint="@android:color/white"
+        android:inputType="text"
+        android:layout_marginTop="20dp"/>
 
     <EditText
         android:id="@+id/passwordEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Password"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:textColorHint="@android:color/white"
+        android:hint="@string/password"
         android:inputType="textPassword"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginBottom="20dp"/>
 
     <Button
         android:id="@+id/loginButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Login"
+        android:text="@string/login_button"
         android:layout_marginTop="32dp"/>
 
     <!-- Hatalı giriş durumunda görünen mesaj -->
@@ -33,7 +41,7 @@
         android:id="@+id/errorMessageTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Invalid username or password"
+        android:text="@string/error_message"
         android:textColor="@android:color/holo_red_light"
         android:visibility="gone"
         android:layout_marginTop="16dp"

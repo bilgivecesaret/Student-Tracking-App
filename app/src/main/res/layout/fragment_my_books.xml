@@ -12,9 +12,9 @@
         android:layout_height="wrap_content"
         android:text="Add New Book" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/booksRecyclerView"
+    <ListView
+        android:id="@+id/booksListView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="8dp"/>
+        android:layout_height="match_parent" />
+
 </LinearLayout>

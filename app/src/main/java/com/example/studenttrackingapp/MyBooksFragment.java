@@ -9,18 +9,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.*;
 
 import java.util.List;
 
 public class MyBooksFragment extends Fragment {
 
-    private RecyclerView recyclerView;
-    private BookAdapter adapter;
-    private List<DataRepository.Book> bookList;
+    private ListView listView;
+    private ArrayAdapter<String> adapter;
+    private BookDAO bookDAO;
 
     public MyBooksFragment() {
-        // Zorunlu boş constructor
+        // Required empty public constructor
     }
 
     @Override
@@ -31,37 +30,40 @@ public class MyBooksFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        recyclerView = view.findViewById(R.id.booksRecyclerView);
+        listView = view.findViewById(R.id.booksListView);
         Button addBookButton = view.findViewById(R.id.addBookButton);
 
-        bookList = DataRepository.getInstance().getBooks();
-        adapter = new BookAdapter(bookList, book -> {
-            Intent intent = new Intent(getActivity(), TopicsListActivity.class);
-            intent.putExtra("bookTitle", book.getTitle());
-            startActivity(intent);
-        });
+        bookDAO = new BookDAO(requireContext());
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(adapter);
+        adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1);
+        listView.setAdapter(adapter);
 
-        // Swipe-to-delete desteği
-        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                int position = viewHolder.getAdapterPosition();
-                DataRepository.getInstance().removeBook(position);
-                adapter.notifyItemRemoved(position);
-                Toast.makeText(getContext(), "Book deleted", Toast.LENGTH_SHORT).show();
-            }
-        };
-        new ItemTouchHelper(simpleCallback).attachToRecyclerView(recyclerView);
+        refreshBookList();
 
         addBookButton.setOnClickListener(v -> showAddBookDialog());
+
+        listView.setOnItemClickListener((parent, view1, position, id) -> {
+            String selectedBook = adapter.getItem(position);
+            if (selectedBook != null) {
+                Intent intent = new Intent(getActivity(), TopicsListActivity.class);
+                intent.putExtra("bookTitle", selectedBook);
+                startActivity(intent);
+            }
+        });
+
+        listView.setOnItemLongClickListener((parent, view12, position, id) -> {
+            String bookToDelete = adapter.getItem(position);
+            if (bookToDelete != null) {
+                showDeleteDialog(bookToDelete);
+            }
+            return true;
+        });
+    }
+
+    private void refreshBookList() {
+        adapter.clear();
+        List<String> books = bookDAO.getAllBooks();
+        adapter.addAll(books);
     }
 
     private void showAddBookDialog() {
@@ -75,13 +77,24 @@ public class MyBooksFragment extends Fragment {
         builder.setPositiveButton("Add", (dialog, which) -> {
             String title = input.getText().toString().trim();
             if (!title.isEmpty()) {
-                DataRepository.Book newBook = new DataRepository.Book(title, "Author Name");
-                DataRepository.getInstance().addBook(newBook);
-                adapter.notifyItemInserted(bookList.size() - 1);
+                bookDAO.addBook(title);
+                refreshBookList();
             }
         });
 
         builder.setNegativeButton("Cancel", null);
         builder.show();
+    }
+
+    private void showDeleteDialog(String bookTitle) {
+        new AlertDialog.Builder(requireContext())
+                .setTitle("Delete Book")
+                .setMessage("Are you sure you want to delete \"" + bookTitle + "\"?")
+                .setPositiveButton("Delete", (dialog, which) -> {
+                    bookDAO.deleteBook(bookTitle);
+                    refreshBookList();
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
     }
 }

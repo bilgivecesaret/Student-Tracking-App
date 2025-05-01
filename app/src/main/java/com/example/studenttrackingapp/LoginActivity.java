@@ -37,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
             if (username.equals("teacher") && password.equals("test")) {
                 // Öğretmen giriş yaparsa TeacherActivity'ye yönlendirilir
                 startActivity(new Intent(LoginActivity.this, TeacherActivity.class));
-            } else if (username.equals("123") && password.equals("student")) {
+            } else if (username.equals("student") && password.equals("test")) {
                 // Öğrenci giriş yaparsa StudentHomeActivity'ye yönlendirilir
                 startActivity(new Intent(LoginActivity.this, StudentHomeActivity.class));
             } else {
