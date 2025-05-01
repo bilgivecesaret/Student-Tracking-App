@@ -44,7 +44,7 @@ public class BookListActivity extends AppCompatActivity {
 
         listView.setOnItemClickListener((parent, view, position, id) -> {
             String bookName = books.get(position);
-            Intent intent = new Intent(BookListActivity.this, SubjectListActivity.class);
+            Intent intent = new Intent(BookListActivity.this, SubjectsListActivity.class);
             intent.putExtra("bookName", bookName);
             intent.putExtra("studentName", studentName);
             startActivity(intent);

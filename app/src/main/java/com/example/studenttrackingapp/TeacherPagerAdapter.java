@@ -1,5 +1,6 @@
 package com.example.studenttrackingapp;
 
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -14,9 +15,10 @@ public class TeacherPagerAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-
+        if (position == 0)
             return new MyStudentsFragment();
-
+        else
+            return new MyBooksFragment();
     }
 
     @Override
@@ -24,4 +26,5 @@ public class TeacherPagerAdapter extends FragmentStateAdapter {
         return 2;
     }
 }
+
 
