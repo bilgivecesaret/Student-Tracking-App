@@ -1,81 +1,105 @@
 package com.example.studenttrackingapp;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import java.util.*;
 
-
+/** Uygulama genelinde veri tutar + SharedPreferences ile kalıcı saklar. */
 public class DataRepository {
 
+    // ────────── Singleton ──────────
     private static DataRepository instance;
+    private SharedPreferences prefs;
+    private static final String PREF_NAME = "student_tracking_prefs";
 
-    private List<Book> books;
-    private Map<String, List<String>> topicsByBook = new HashMap<>();
-    private Map<String, List<StudentTopicAssignment>> studentTopicMap = new HashMap<>();
-
-    private DataRepository() {
-        books = new ArrayList<>();
+    public static void init(Context ctx) {   // TeacherActivity → onCreate’de çağır
+        if (instance == null) instance = new DataRepository(ctx.getApplicationContext());
     }
+    public static DataRepository getInstance() { return instance; }
 
-    public static DataRepository getInstance() {
-        if (instance == null) {
-            instance = new DataRepository();
-        }
-        return instance;
-    }
+    private DataRepository(Context ctx) { prefs = ctx.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE); }
 
-    public List<Book> getBooks() {
-        return books;
-    }
+    // ────────── Kitap listesi (in‑memory) ──────────
+    private final List<Book> books = new ArrayList<>();
+
+    // =========================================================
+    //  KİTAP İŞLEMLERİ
+    // =========================================================
+    public List<Book> getBooks() { return books; }
 
     public void addBook(Book book) {
-        books.add(book);
-        topicsByBook.putIfAbsent(book.getTitle(), new ArrayList<>());
+        if (!books.contains(book)) books.add(book);
+        // kitap için prefs anahtarı yoksa boş set oluştur
+        prefs.edit().putStringSet(topicsKey(book.getTitle()), new HashSet<>()).apply();
     }
 
     public void removeBook(int index) {
         if (index >= 0 && index < books.size()) {
-            Book removedBook = books.remove(index);
-            topicsByBook.remove(removedBook.getTitle());
+            Book removed = books.remove(index);
+            prefs.edit().remove(topicsKey(removed.getTitle())).apply();
         }
     }
 
-
-    public List<String> getTopicsForBook(String bookName) {
-        return topicsByBook.getOrDefault(bookName, Collections.emptyList());
+    // =========================================================
+    //  TOPIC İŞLEMLERİ (Kalıcı)
+    // =========================================================
+    public List<String> getTopicsForBook(String book) {
+        Set<String> set = prefs.getStringSet(topicsKey(book), new HashSet<>());
+        return new ArrayList<>(set);              // ListView için kopya Liste
     }
 
-    public void addTopicToBook(String bookName, String topic) {
-        topicsByBook.putIfAbsent(bookName, new ArrayList<>());
-        topicsByBook.get(bookName).add(topic);
-
+    public void addTopicToBook(String book, String topic) {
+        modifyTopics(book, set -> set.add(topic));
     }
 
-    public void assignTopicToStudent(String studentName, String topic, String book, String dateRange, boolean isCompleted) {
-        List<StudentTopicAssignment> assignments = studentTopicMap.getOrDefault(studentName, new ArrayList<>());
-        assignments.add(new StudentTopicAssignment(book, topic, dateRange, isCompleted));
-        studentTopicMap.put(studentName, assignments);
+    public void updateTopic(String book, String oldName, String newName) {
+        modifyTopics(book, set -> {
+            if (set.remove(oldName)) set.add(newName);
+        });
     }
 
-    public List<StudentTopicAssignment> getAssignmentsForStudent(String studentName) {
-        return studentTopicMap.getOrDefault(studentName, new ArrayList<>());
+    public void deleteTopic(String book, String topic) {
+        modifyTopics(book, set -> set.remove(topic));
     }
 
-    // Nested class to hold assignment info
+    // =========================================================
+    //  Yardımcı ↓
+    // =========================================================
+    private String topicsKey(String book) { return "topics_" + book; }
+
+    /** SharedPreferences içindeki Set<String>’i okur, lambda ile değiştirir, geri kaydeder */
+    private void modifyTopics(String book, java.util.function.Consumer<Set<String>> action) {
+        String key = topicsKey(book);
+        // prefs’ten MUTABLE kopya almak için yeni HashSet oluştur
+        Set<String> set = new HashSet<>(prefs.getStringSet(key, new HashSet<>()));
+        action.accept(set);
+        prefs.edit().putStringSet(key, set).apply();
+    }
+
+    // =========================================================
+    //  Öğrenci‑Konu eşlemesi (mevcut kodun aynısı)
+    // =========================================================
+    private final Map<String, List<StudentTopicAssignment>> studentTopicMap = new HashMap<>();
+
+    public void assignTopicToStudent(String student, String topic,
+                                     String book, String dateRange, boolean completed) {
+        List<StudentTopicAssignment> list = studentTopicMap.getOrDefault(student, new ArrayList<>());
+        list.add(new StudentTopicAssignment(book, topic, dateRange, completed));
+        studentTopicMap.put(student, list);
+    }
+    public List<StudentTopicAssignment> getAssignmentsForStudent(String student) {
+        return studentTopicMap.getOrDefault(student, new ArrayList<>());
+    }
+
+    // ────────── Nested sınıf değişmedi ──────────
     public static class StudentTopicAssignment {
-        public String book;
-        public String topic;
-        public String dateRange;
-        public boolean isCompleted;
-
-        public StudentTopicAssignment(String book, String topic, String dateRange, boolean isCompleted) {
-            this.book = book;
-            this.topic = topic;
-            this.dateRange = dateRange;
-            this.isCompleted = isCompleted;
+        public String book, topic, dateRange; public boolean isCompleted;
+        public StudentTopicAssignment(String b,String t,String d,boolean c){
+            book=b; topic=t; dateRange=d; isCompleted=c;
         }
-
-        @Override
-        public String toString() {
-            return topic + " (" + book + ") - " + dateRange + (isCompleted ? " ✓" : " ✗");
+        @Override public String toString() {
+            return topic+" ("+book+") - "+dateRange+(isCompleted?" ✓":" ✗");
         }
     }
 }

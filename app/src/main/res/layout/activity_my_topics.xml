@@ -10,10 +10,11 @@
         android:id="@+id/addTopicButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add New Topic"/>
+        android:text="Add New Topic" />
 
     <ListView
         android:id="@+id/myTopicListView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:longClickable="true"/>
 </LinearLayout>
