@@ -10,8 +10,6 @@ public class DataRepository {
     private List<Book> books;
     private Map<String, List<String>> topicsByBook = new HashMap<>();
     private Map<String, List<StudentTopicAssignment>> studentTopicMap = new HashMap<>();
-    private Map<String, List<String>> bookTopicsMap = new HashMap<>();
-
 
     private DataRepository() {
         books = new ArrayList<>();
@@ -41,22 +39,9 @@ public class DataRepository {
     }
 
 
-    public List<String> getTopicsForBook(String bookTitle) {
-        Map<String, List<String>> topics = this.bookTopicsMap;
-        if (topics.containsKey(bookTitle)) {
-            return new ArrayList<>(topics.get(bookTitle));
-        }
-
-        // case-insensitive fallback
-        for (String key : topics.keySet()) {
-            if (key.equalsIgnoreCase(bookTitle)) {
-                return new ArrayList<>(topics.get(key));
-            }
-        }
-
-        return new ArrayList<>(); // boş liste döndür
+    public List<String> getTopicsForBook(String bookName) {
+        return topicsByBook.getOrDefault(bookName, Collections.emptyList());
     }
-
 
     public void addTopicToBook(String bookName, String topic) {
         topicsByBook.putIfAbsent(bookName, new ArrayList<>());

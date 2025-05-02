@@ -2,7 +2,6 @@ package com.example.studenttrackingapp;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.*;
 
 import androidx.appcompat.app.AlertDialog;
@@ -20,6 +19,7 @@ public class TopicsListActivity extends AppCompatActivity {
     private List<String> topics;
     private static final String TAG = "TopicsListActivity";
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,7 +28,6 @@ public class TopicsListActivity extends AppCompatActivity {
         listView = findViewById(R.id.topicsListView);
         addTopicButton = findViewById(R.id.addTopicButton);
 
-        topicDAO = new TopicDAO(this);
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
         listView.setAdapter(adapter);
 
