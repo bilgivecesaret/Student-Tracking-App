@@ -2,15 +2,11 @@ package com.example.studenttrackingapp;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
-import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,25 +20,25 @@ public class MainActivity extends AppCompatActivity {
         Button studentButton = findViewById(R.id.studentButton);
 
         teacherButton.setOnClickListener(v -> {
-            // Öğretmen butonuna tıklanırsa LoginActivity'ye yönlendirilir
+            // If you click on the teacher button, you will be directed to LoginActivity.
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             intent.putExtra("role", "teacher");
             startActivity(intent);
         });
 
         studentButton.setOnClickListener(v -> {
-            // Öğrenci butonuna tıklanırsa LoginActivity'ye yönlendirilir
+            // If the student button is clicked, it will be directed to LoginActivity.
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             intent.putExtra("role", "student");
             startActivity(intent);
         });
     }
     private void syncBooksData() {
-        // Kitap verilerini senkronize etmek için Worker'ı başlatıyoruz.
+        // We start the Worker to synchronize the book data.
         WorkRequest syncRequest = new OneTimeWorkRequest.Builder(BookSyncWorker.class)
                 .build();
 
-        // WorkManager ile iş talebini başlatıyoruz.
+        // We start the job request with WorkManager.
         WorkManager.getInstance(this).enqueue(syncRequest);
     }
 

@@ -26,15 +26,25 @@
         </activity>
         <activity android:name=".MainActivity" />
         <activity android:name=".LoginActivity" />
+        <activity android:name=".StudentHomeActivity" />
+        <activity android:name=".BookProgressActivity" />
+        <activity android:name=".AttendanceActivity" />
+        <activity android:name=".ProgressChartActivity" />
+        <activity android:name=".WeeklyScheduleActivity" />
+        <activity android:name=".TopicsListActivity" />
+
+
+
+
+
+        <activity android:name=".TeacherActivity" />
         <activity android:name=".MyBooksActivity" />
         <activity android:name=".StudentDetailActivity" />
-        <activity android:name=".WeeklyScheduleActivity" />
         <activity android:name=".CalendarActivity" />
         <activity android:name=".AbsenceActivity" />
-        <activity android:name=".TeacherActivity" />
         <activity android:name=".SubjectsListActivity" />
-        <activity android:name=".TopicsListActivity" />
-        <activity android:name=".StudentHomeActivity" />
+
+
     </application>
 
 </manifest>

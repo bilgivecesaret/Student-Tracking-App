@@ -13,6 +13,8 @@ import org.json.JSONObject;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class BookSyncWorker extends Worker {
@@ -27,7 +29,7 @@ public class BookSyncWorker extends Worker {
     @Override
     public Result doWork() {
         try {
-            URL url = new URL("https://raw.githubusercontent.com/kullaniciadi/projeadi/main/books.json"); // Burayı kendi linkinle değiştir
+            URL url = new URL("https://raw.githubusercontent.com/kullaniciadi/projeadi/main/books.json");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.connect();
@@ -42,9 +44,26 @@ public class BookSyncWorker extends Worker {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject bookObj = jsonArray.getJSONObject(i);
                 String title = bookObj.getString("title");
-                String author = bookObj.getString("author");
 
-                DataRepository.Book book = new DataRepository.Book(title, author);
+                // Konuları ayıkla
+                JSONArray topicsArray = bookObj.getJSONArray("topics");
+                List<Topic> topics = new ArrayList<>();
+
+                for (int j = 0; j < topicsArray.length(); j++) {
+                    JSONObject topicObj = topicsArray.getJSONObject(j);
+                    String topicName = topicObj.getString("name");
+
+                    JSONArray testsArray = topicObj.getJSONArray("tests");
+                    List<String> tests = new ArrayList<>();
+                    for (int k = 0; k < testsArray.length(); k++) {
+                        tests.add(testsArray.getString(k));
+                    }
+
+                    topics.add(new Topic(topicName, tests));
+                }
+
+                // Book nesnesi oluştur ve ekle
+                Book book = new Book(title, topics);
                 DataRepository.getInstance().addBook(book);
             }
 
@@ -56,5 +75,6 @@ public class BookSyncWorker extends Worker {
             return Result.failure();
         }
     }
+
 }
 

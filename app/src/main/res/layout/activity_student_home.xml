@@ -14,7 +14,7 @@
             android:id="@+id/studentWelcome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hoş Geldin, Mustafa"
+            android:text="@string/studentWelcome"
             android:textSize="22sp"
             android:textStyle="bold"
             android:layout_marginBottom="32dp" />
@@ -23,21 +23,21 @@
             android:id="@+id/bookProgressButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="📘 Kitap İlerlemesi"
+            android:text="@string/bookProgressButton"
             android:layout_marginBottom="16dp" />
 
         <Button
             android:id="@+id/attendanceButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="🗓️ Yoklama Durumu"
+            android:text="@string/attendanceButton"
             android:layout_marginBottom="16dp" />
 
         <Button
             android:id="@+id/chartButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="📊 Grafiksel Gösterim"
+            android:text="@string/chartButton"
             android:layout_marginBottom="16dp" />
 
         <View
@@ -50,13 +50,13 @@
             android:id="@+id/myScheduleButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="🗓️ Haftalık Program"
+            android:text="@string/myScheduleButton"
             android:layout_marginBottom="16dp" />
 
         <Button
             android:id="@+id/myBooksButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="📚 Kitaplarım" />
+            android:text="@string/myBooksButton" />
     </LinearLayout>
 </ScrollView>

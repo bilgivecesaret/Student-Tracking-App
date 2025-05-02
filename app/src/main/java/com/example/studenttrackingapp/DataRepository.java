@@ -2,6 +2,7 @@ package com.example.studenttrackingapp;
 
 import java.util.*;
 
+
 public class DataRepository {
 
     private static DataRepository instance;
@@ -12,10 +13,6 @@ public class DataRepository {
 
     private DataRepository() {
         books = new ArrayList<>();
-
-        // Örnek kitaplar (isteğe bağlı)
-        books.add(new Book("Math", "Author Name"));  // Pass both title and author
-
     }
 
     public static DataRepository getInstance() {
@@ -25,57 +22,41 @@ public class DataRepository {
         return instance;
     }
 
-
-    public static class Book {  // Make Book static
-        private String title;
-        private String author;
-
-        // Constructor with two parameters
-        public Book(String title, String author) {
-            this.title = title;
-            this.author = author;
-        }
-
-        // Getter for title
-        public String getTitle() {
-            return title;
-        }
-
-        // Getter for author
-        public String getAuthor() {
-            return author;
-        }
-    }
-
-
-
-
-
     public List<Book> getBooks() {
         List<Book> books = new ArrayList<>();
-        DataRepository.Book newBook = new DataRepository.Book("Math", "Author Name");
+
+        List<Topic> topicList = new ArrayList<>();
+        topicList.add(new Topic("Algebra", Arrays.asList("Test 1", "Test 2")));
+        topicList.add(new Topic("Geometry", Arrays.asList("Test 1", "Test 2")));
+        topicList.add(new Topic("Calculus", Arrays.asList("Test 1", "Test 2")));
+
+        Book newBook = new Book("Math", topicList);
+
         books.add(newBook);
         return books;
     }
 
     public void addBook(Book book) {
         books.add(book);
-        topicsByBook.putIfAbsent(book.title, new ArrayList<>());
+        topicsByBook.putIfAbsent(book.getTitle(), new ArrayList<>());
     }
 
     public void removeBook(int index) {
         if (index >= 0 && index < books.size()) {
-            books.remove(index);
+            Book removedBook = books.remove(index);
+            topicsByBook.remove(removedBook.getTitle());
         }
     }
 
 
     public List<String> getTopicsForBook(String bookName) {
-        return topicsByBook.getOrDefault(bookName, new ArrayList<>());
+        return topicsByBook.getOrDefault(bookName, Collections.emptyList());
     }
 
     public void addTopicToBook(String bookName, String topic) {
+        topicsByBook.putIfAbsent(bookName, new ArrayList<>());
         topicsByBook.get(bookName).add(topic);
+
     }
 
     public void assignTopicToStudent(String studentName, String topic, String book, String dateRange, boolean isCompleted) {

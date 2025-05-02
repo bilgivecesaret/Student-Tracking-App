@@ -7,16 +7,15 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class StudentHomeActivity extends AppCompatActivity {
-    Button bookProgressButton, attendanceButton, chartButton;
+    Button bookProgressButton, attendanceButton, chartButton, myScheduleButton, myBooksButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_home);
 
-        Button myScheduleButton = findViewById(R.id.myScheduleButton);
-        Button myBooksButton = findViewById(R.id.myBooksButton);
-
+        myScheduleButton = findViewById(R.id.myScheduleButton);
+        myBooksButton = findViewById(R.id.myBooksButton);
         bookProgressButton = findViewById(R.id.bookProgressButton);
         attendanceButton = findViewById(R.id.attendanceButton);
         chartButton = findViewById(R.id.chartButton);

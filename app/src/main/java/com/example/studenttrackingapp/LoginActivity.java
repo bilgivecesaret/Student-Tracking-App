@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -29,19 +28,19 @@ public class LoginActivity extends AppCompatActivity {
         // Hide error message initially
         errorMessageTextView.setVisibility(View.INVISIBLE);
 
-        // Giriş butonuna tıklama işlemi
+        // Clicking on the login button
         loginButton.setOnClickListener(v -> {
             String username = usernameEditText.getText().toString().trim();
             String password = passwordEditText.getText().toString().trim();
 
-            if (username.equals("teacher") && password.equals("test")) {
-                // Öğretmen giriş yaparsa TeacherActivity'ye yönlendirilir
+            if (username.equals("teacher") && password.equals("123")) {
+                // If the teacher logs in, they will be directed to TeacherActivity
                 startActivity(new Intent(LoginActivity.this, TeacherActivity.class));
-            } else if (username.equals("student") && password.equals("test")) {
-                // Öğrenci giriş yaparsa StudentHomeActivity'ye yönlendirilir
+            } else if (username.equals("student") && password.equals("123")) {
+                // If the student logs in, they will be directed to StudentHomeActivity
                 startActivity(new Intent(LoginActivity.this, StudentHomeActivity.class));
             } else {
-                // Hatalı giriş durumunda hata mesajı gösterilir
+                // In case of incorrect entry, an error message is displayed.
                 errorMessageTextView.setVisibility(View.VISIBLE);
             }
         });

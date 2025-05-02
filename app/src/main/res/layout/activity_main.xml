@@ -9,13 +9,13 @@
 
     <Button
         android:id="@+id/teacherButton"
-        android:text="Teacher"
+        android:text="@string/teacher_role"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <Button
         android:id="@+id/studentButton"
-        android:text="Student"
+        android:text="@string/student_role"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

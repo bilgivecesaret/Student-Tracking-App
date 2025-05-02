@@ -1,8 +1,16 @@
 <resources>
     <string name="app_name">Student Tracking App</string>
+    <string name="teacher_role">Teacher</string>
+    <string name="student_role">Student</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="login_button">Login</string>
     <string name="error_message">Invalid username or password</string>
-
+    <string name="studentWelcome">Hoşgeldin, Öğrenci!</string>
+    <string name="bookProgressButton">📘 Kitap İlerlemesi</string>
+    <string name="attendanceButton">🗓️ Yoklama Durumu</string>
+    <string name="chartButton">📊 Grafiksel Gösterim</string>
+    <string name="myScheduleButton">🗓️ Haftalık Program</string>
+    <string name="myBooksButton">📚 Kitaplarım</string>
+    <string name="bookProgressTextView">Book Progress</string>
 </resources>
