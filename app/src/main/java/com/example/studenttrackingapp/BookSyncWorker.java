@@ -13,8 +13,7 @@ import org.json.JSONObject;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Iterator;
 import java.util.Scanner;
 
 public class BookSyncWorker extends Worker {
@@ -29,7 +28,7 @@ public class BookSyncWorker extends Worker {
     @Override
     public Result doWork() {
         try {
-            URL url = new URL("https://raw.githubusercontent.com/kullaniciadi/projeadi/main/books.json");
+            URL url = new URL("https://raw.githubusercontent.com/bilgivecesaret/student-tracking-json/refs/heads/main/books.json");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.connect();
@@ -39,32 +38,37 @@ public class BookSyncWorker extends Worker {
             scanner.useDelimiter("\\A");
 
             String jsonData = scanner.hasNext() ? scanner.next() : "";
-            JSONArray jsonArray = new JSONArray(jsonData);
+            JSONObject booksObject = new JSONObject(jsonData).getJSONObject("books");
 
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject bookObj = jsonArray.getJSONObject(i);
-                String title = bookObj.getString("title");
+            BookDAO bookDAO = new BookDAO(getApplicationContext());
+            TopicDAO topicDAO = new TopicDAO(getApplicationContext());
+            TestDAO testDAO = new TestDAO(getApplicationContext());
 
-                // Konuları ayıkla
-                JSONArray topicsArray = bookObj.getJSONArray("topics");
-                List<Topic> topics = new ArrayList<>();
+            Iterator<String> bookKeys = booksObject.keys();
+            while (bookKeys.hasNext()) {
+                String bookTitle = bookKeys.next();
 
-                for (int j = 0; j < topicsArray.length(); j++) {
-                    JSONObject topicObj = topicsArray.getJSONObject(j);
-                    String topicName = topicObj.getString("name");
+                if (!bookDAO.isBookExists(bookTitle)) {
+                    int bookId = bookDAO.addBook(bookTitle);
+                    JSONObject topicsObject = booksObject.getJSONObject(bookTitle).getJSONObject("topics");
 
-                    JSONArray testsArray = topicObj.getJSONArray("tests");
-                    List<String> tests = new ArrayList<>();
-                    for (int k = 0; k < testsArray.length(); k++) {
-                        tests.add(testsArray.getString(k));
+                    Iterator<String> topicKeys = topicsObject.keys();
+                    while (topicKeys.hasNext()) {
+                        String topicName = topicKeys.next();
+
+                        if (!topicDAO.isTopicExists(bookId, topicName)) {
+                            int topicId = topicDAO.addTopic(bookId, topicName);
+                            JSONArray testArray = topicsObject.getJSONArray(topicName);
+
+                            for (int i = 0; i < testArray.length(); i++) {
+                                String testName = testArray.getString(i);
+                                if (!testDAO.isTestExists(topicId, testName)) {
+                                    testDAO.addTest(topicId, testName);
+                                }
+                            }
+                        }
                     }
-
-                    topics.add(new Topic(topicName, tests));
                 }
-
-                // Book nesnesi oluştur ve ekle
-                Book book = new Book(title, topics);
-                DataRepository.getInstance().addBook(book);
             }
 
             Log.d(TAG, "Kitap senkronizasyonu tamamlandı.");
@@ -75,6 +79,4 @@ public class BookSyncWorker extends Worker {
             return Result.failure();
         }
     }
-
 }
-

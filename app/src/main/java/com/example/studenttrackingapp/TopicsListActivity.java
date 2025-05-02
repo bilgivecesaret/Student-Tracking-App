@@ -2,6 +2,7 @@ package com.example.studenttrackingapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.*;
 
 import androidx.appcompat.app.AlertDialog;
@@ -16,6 +17,8 @@ public class TopicsListActivity extends AppCompatActivity {
     private Button addTopicButton;
     private ArrayAdapter<String> adapter;
 
+    private static final String TAG = "TopicsListActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,8 +31,16 @@ public class TopicsListActivity extends AppCompatActivity {
 
         if (bookTitle == null || bookTitle.isEmpty()) {
             Toast.makeText(this, "Book title missing", Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "Book title is null or empty.");
             finish();
             return;
+        }else{
+            List<String> topics = DataRepository.getInstance().getTopicsForBook(bookTitle);
+            if (topics == null || topics.isEmpty()) {
+                Log.d(TAG, "No topics found for book: " + bookTitle);
+            } else {
+                Log.d(TAG, "Found topics: " + topics.size());
+            }
         }
 
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
