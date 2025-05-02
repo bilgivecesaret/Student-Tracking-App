@@ -50,6 +50,27 @@ public class BookDAO {
         return books;
     }
 
+    public int getBookId(String title) {
+        int bookId = -1;
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        Cursor cursor = db.query(DatabaseHelper.TABLE_BOOKS,
+                new String[]{DatabaseHelper.COLUMN_BOOK_ID},
+                DatabaseHelper.COLUMN_BOOK_NAME + "=?",
+                new String[]{title},
+                null, null, null);
+
+        if (cursor.moveToFirst()) {
+            bookId = cursor.getInt(0);
+        }
+
+        cursor.close();
+        db.close();
+        return bookId;
+    }
+
+
+
     // Kitap sil (başlığa göre)
     public void deleteBook(String title) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();

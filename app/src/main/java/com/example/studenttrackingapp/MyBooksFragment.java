@@ -47,6 +47,7 @@ public class MyBooksFragment extends Fragment {
             if (selectedBook != null) {
                 Intent intent = new Intent(getActivity(), TopicsListActivity.class);
                 intent.putExtra("bookTitle", selectedBook);
+                intent.putExtra("bookId", bookDAO.getBookId(selectedBook));
                 startActivity(intent);
             }
         });
@@ -96,5 +97,10 @@ public class MyBooksFragment extends Fragment {
                 })
                 .setNegativeButton("Cancel", null)
                 .show();
+    }
+
+    private void getBookId() {
+        bookDAO = new BookDAO(requireContext());
+
     }
 }

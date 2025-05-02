@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,19 +12,48 @@ import java.util.List;
 public class TopicDAO {
 
     private DatabaseHelper dbHelper;
+    private static final String TAG = "TopicDAO";
 
     public TopicDAO(Context context) {
         dbHelper = new DatabaseHelper(context);
+    }
+
+    public List<String> getAllTopics() {
+        List<String> topics = new ArrayList<>();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.query(DatabaseHelper.TABLE_TOPICS,
+                new String[]{DatabaseHelper.COLUMN_TOPIC_NAME},
+                null, null, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                String title = cursor.getString(0);
+                topics.add(title);
+            } while (cursor.moveToNext());
+        }
+        Log.d(TAG, "Topics numbers: " + topics.size());
+        cursor.close();
+        db.close();
+        return topics;
     }
 
     // Belirli bir kitaba konu ekle
     public int addTopic(int bookId, String topicName) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(DatabaseHelper.COLUMN_BOOK_ID, bookId);
         values.put(DatabaseHelper.COLUMN_TOPIC_NAME, topicName);
+        values.put(DatabaseHelper.COLUMN_TOPIC_BOOK_ID, bookId);  // Doğru sütun adı
         long id = db.insert(DatabaseHelper.TABLE_TOPICS, null, values);
+        db.close();
         return (int) id;
+    }
+
+    public void deleteTopic(String title) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.delete(DatabaseHelper.TABLE_TOPICS,
+                DatabaseHelper.COLUMN_TOPIC_NAME + " = ?",
+                new String[]{title});
+        db.close();
     }
 
     public List<String> getTopicsByBookName(String bookName) {
