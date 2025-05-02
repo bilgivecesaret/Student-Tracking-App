@@ -2,21 +2,32 @@ package com.example.studenttrackingapp;
 
 import java.util.List;
 
-public class Topic {
-    private String name;
-    private List<String> tests;
 
-    public Topic(String name, List<String> tests) {
+public class Topic {
+    private int id;        // Konunun ID'si
+    private String name;   // Konunun ismi
+
+    // Constructor
+    public Topic(int id, String name) {
+        this.id = id;
         this.name = name;
-        this.tests = tests;
+    }
+
+    // Getter ve Setter'lar
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
         return name;
     }
 
-    public List<String> getTests() {
-        return tests;
+    public void setName(String name) {
+        this.name = name;
     }
 }
 

@@ -1,0 +1,116 @@
+package com.example.studenttrackingapp;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class TopicDAO {
+
+    private DatabaseHelper dbHelper;
+
+    public TopicDAO(Context context) {
+        dbHelper = new DatabaseHelper(context);
+    }
+
+    // Belirli bir kitaba konu ekle
+    public int addTopic(int bookId, String topicName) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.COLUMN_BOOK_ID, bookId);
+        values.put(DatabaseHelper.COLUMN_TOPIC_NAME, topicName);
+        long id = db.insert(DatabaseHelper.TABLE_TOPICS, null, values);
+        return (int) id;
+    }
+
+    public List<String> getTopicsByBookName(String bookName) {
+        List<String> topicList = new ArrayList<>();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String query = "SELECT t." + DatabaseHelper.COLUMN_TOPIC_NAME +
+                " FROM " + DatabaseHelper.TABLE_TOPICS + " t " +
+                "JOIN " + DatabaseHelper.TABLE_BOOKS + " b ON t." + DatabaseHelper.COLUMN_BOOK_ID +
+                " = b." + DatabaseHelper.COLUMN_BOOK_ID +
+                " WHERE b." + DatabaseHelper.COLUMN_BOOK_NAME + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{bookName});
+
+        if (cursor.moveToFirst()) {
+            do {
+                topicList.add(cursor.getString(0));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return topicList;
+    }
+
+
+
+    // Belirli bir kitaba ait konuları getir
+    public List<String> getTopicsByBookId(int bookId) {
+        List<String> topics = new ArrayList<>();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        Cursor cursor = db.query(DatabaseHelper.TABLE_TOPICS,
+                new String[]{DatabaseHelper.COLUMN_TOPIC_NAME},
+                DatabaseHelper.COLUMN_TOPIC_BOOK_ID + " = ?",
+                new String[]{String.valueOf(bookId)},
+                null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                String topic = cursor.getString(0);
+                topics.add(topic);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return topics;
+    }
+
+    // Konu ID'sini getir (kitap adı + konu adı ile)
+    public int getTopicId(int bookId, String topicName) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.query(DatabaseHelper.TABLE_TOPICS,
+                new String[]{DatabaseHelper.COLUMN_TOPIC_ID},
+                DatabaseHelper.COLUMN_TOPIC_BOOK_ID + " = ? AND " +
+                        DatabaseHelper.COLUMN_TOPIC_NAME + " = ?",
+                new String[]{String.valueOf(bookId), topicName},
+                null, null, null);
+
+        int topicId = -1;
+        if (cursor.moveToFirst()) {
+            topicId = cursor.getInt(0);
+        }
+
+        cursor.close();
+        db.close();
+        return topicId;
+    }
+
+    public int addTopicAndReturnId(int bookId, String topicName) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.COLUMN_TOPIC_BOOK_ID, bookId);
+        values.put(DatabaseHelper.COLUMN_TOPIC_NAME, topicName);
+        long id = db.insert(DatabaseHelper.TABLE_TOPICS, null, values);
+        db.close();
+        return (int) id;
+    }
+
+    public boolean isTopicExists(int bookId, String topicName) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.query(DatabaseHelper.TABLE_TOPICS,
+                new String[]{DatabaseHelper.COLUMN_TOPIC_ID},
+                DatabaseHelper.COLUMN_BOOK_ID + "=? AND " + DatabaseHelper.COLUMN_TOPIC_NAME + "=?",
+                new String[]{String.valueOf(bookId), topicName},
+                null, null, null);
+        boolean exists = cursor.moveToFirst();
+        cursor.close();
+        return exists;
+    }
+
+}

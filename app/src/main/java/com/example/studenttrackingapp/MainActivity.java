@@ -8,6 +8,7 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
 
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("role", "student");
             startActivity(intent);
         });
+
     }
     private void syncBooksData() {
         // We start the Worker to synchronize the book data.

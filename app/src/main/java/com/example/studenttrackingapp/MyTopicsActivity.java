@@ -1,11 +1,8 @@
 package com.example.studenttrackingapp;
 
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.*;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
@@ -31,27 +28,21 @@ public class MyTopicsActivity extends AppCompatActivity {
         topics.add("Numbers");
         topics.add("Sets");
 
-        adapter = new ArrayAdapter<>(this, R.layout.list_item_topic, R.id.topicText, topics);
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, topics);
         listView.setAdapter(adapter);
 
         addTopicButton.setOnClickListener(v -> {
             EditText input = new EditText(this);
-            new AlertDialog.Builder(this)
+            new android.app.AlertDialog.Builder(this)
                     .setTitle("Add New Topic")
                     .setView(input)
                     .setPositiveButton("Add", (dialog, which) -> {
-                        String topic = input.getText().toString().trim();
-                        if (!topic.isEmpty()) {
-                            topics.add(topic);
-                            adapter.notifyDataSetChanged();
-                        } else {
-                            Toast.makeText(this, "Topic cannot be empty", Toast.LENGTH_SHORT).show();
-                        }
+                        topics.add(input.getText().toString());
+                        adapter.notifyDataSetChanged();
                     })
                     .setNegativeButton("Cancel", null)
                     .show();
         });
-
         listView.setOnItemLongClickListener((parent, view, position, id) -> {
             String topic = topics.get(position);
 
@@ -65,13 +56,8 @@ public class MyTopicsActivity extends AppCompatActivity {
                                     .setTitle("Edit Topic")
                                     .setView(input)
                                     .setPositiveButton("Save", (d, w) -> {
-                                        String updatedTopic = input.getText().toString().trim();
-                                        if (!updatedTopic.isEmpty()) {
-                                            topics.set(position, updatedTopic);
-                                            adapter.notifyDataSetChanged();
-                                        } else {
-                                            Toast.makeText(this, "Topic cannot be empty", Toast.LENGTH_SHORT).show();
-                                        }
+                                        topics.set(position, input.getText().toString());
+                                        adapter.notifyDataSetChanged();
                                     })
                                     .setNegativeButton("Cancel", null)
                                     .show();
@@ -83,5 +69,7 @@ public class MyTopicsActivity extends AppCompatActivity {
                     .show();
             return true;
         });
+
     }
 }
+

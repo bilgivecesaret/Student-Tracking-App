@@ -45,7 +45,6 @@
 
 
 
-        <activity android:name=".MyBooksActivity" />
         <activity android:name=".CalendarActivity" />
         <activity android:name=".SubjectsListActivity" />
 
