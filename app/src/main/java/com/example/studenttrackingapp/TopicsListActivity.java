@@ -55,7 +55,9 @@ public class TopicsListActivity extends AppCompatActivity {
 
     private void refreshTopicList() {
         adapter.clear();
-        topics = topicDAO.getAllTopics();
+        String bookTitle = getIntent().getStringExtra("bookTitle").toString();
+        topicDAO = new TopicDAO(this);
+        topics = topicDAO.getAllTopics(bookTitle);
         adapter.addAll(topics);
     }
 

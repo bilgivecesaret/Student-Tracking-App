@@ -18,24 +18,42 @@ public class TopicDAO {
         dbHelper = new DatabaseHelper(context);
     }
 
-    public List<String> getAllTopics() {
+    public List<String> getAllTopics(String bookTitle) {
         List<String> topics = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.query(DatabaseHelper.TABLE_TOPICS,
-                new String[]{DatabaseHelper.COLUMN_TOPIC_NAME},
-                null, null, null, null, null);
 
-        if (cursor.moveToFirst()) {
-            do {
-                String title = cursor.getString(0);
-                topics.add(title);
-            } while (cursor.moveToNext());
+        // Önce kitap başlığına göre kitap ID’si al
+        Cursor bookCursor = db.query(DatabaseHelper.TABLE_BOOKS,
+                new String[]{DatabaseHelper.COLUMN_BOOK_ID},
+                DatabaseHelper.COLUMN_BOOK_NAME + " = ?",
+                new String[]{bookTitle}, null, null, null);
+
+        if (bookCursor.moveToFirst()) {
+            int bookId = bookCursor.getInt(0);
+            bookCursor.close();
+
+            // Şimdi topic’leri bookId'ye göre getir
+            Cursor topicCursor = db.query(DatabaseHelper.TABLE_TOPICS,
+                    new String[]{DatabaseHelper.COLUMN_TOPIC_NAME},
+                    DatabaseHelper.COLUMN_TOPIC_BOOK_ID + " = ?",
+                    new String[]{String.valueOf(bookId)}, null, null, null);
+
+            if (topicCursor.moveToFirst()) {
+                do {
+                    String topicName = topicCursor.getString(0);
+                    topics.add(topicName);
+                } while (topicCursor.moveToNext());
+            }
+            topicCursor.close();
+        } else {
+            bookCursor.close();
+            Log.e(TAG, "Belirtilen kitap bulunamadı: " + bookTitle);
         }
-        Log.d(TAG, "Topics numbers: " + topics.size());
-        cursor.close();
+
         db.close();
         return topics;
     }
+
 
     // Belirli bir kitaba konu ekle
     public int addTopic(int bookId, String topicName) {

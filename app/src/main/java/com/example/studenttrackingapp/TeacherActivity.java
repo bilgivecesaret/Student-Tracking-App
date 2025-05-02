@@ -21,10 +21,6 @@ public class TeacherActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        /* ▶︎ Yalnızca bu satır eklendi ◀︎ */
-        DataRepository.init(getApplicationContext());
-
         setContentView(R.layout.activity_teacher);
 
         tabLayout      = findViewById(R.id.tabLayout);
