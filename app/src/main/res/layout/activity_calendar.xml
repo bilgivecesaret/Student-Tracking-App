@@ -10,25 +10,25 @@
         android:id="@+id/editTextSubject"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Subject"/>
+        android:hint="@string/editTextSubject"/>
 
     <EditText
         android:id="@+id/editTextStartDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Start Date"
+        android:hint="@string/editTextStartDate"
         android:focusable="false"/>
 
     <EditText
         android:id="@+id/editTextEndDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="End Date"
+        android:hint="@string/editTextEndDate"
         android:focusable="false"/>
 
     <Button
         android:id="@+id/saveScheduleButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Save Schedule"/>
+        android:text="@string/saveScheduleButton"/>
 </LinearLayout>

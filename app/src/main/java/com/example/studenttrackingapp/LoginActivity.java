@@ -35,10 +35,14 @@ public class LoginActivity extends AppCompatActivity {
 
             if (username.equals("teacher") && password.equals("123")) {
                 // If the teacher logs in, they will be directed to TeacherActivity
-                startActivity(new Intent(LoginActivity.this, TeacherActivity.class));
+                Intent intent = new Intent(LoginActivity.this, TeacherActivity.class);
+                intent.putExtra("teacher_name", "Kemal");
+                startActivity(intent);
             } else if (username.equals("student") && password.equals("123")) {
                 // If the student logs in, they will be directed to StudentHomeActivity
-                startActivity(new Intent(LoginActivity.this, StudentHomeActivity.class));
+                Intent intent = new Intent(new Intent(LoginActivity.this, StudentHomeActivity.class));
+                intent.putExtra("student_name", "Mustafa");
+                startActivity(intent);
             } else {
                 // In case of incorrect entry, an error message is displayed.
                 errorMessageTextView.setVisibility(View.VISIBLE);

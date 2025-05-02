@@ -13,6 +13,7 @@ public class StudentDetailActivity extends AppCompatActivity {
     private ListView listView;
     private String[] options = {"Yearly Schedule", "Weekly Schedule", "Books", "Absence"};
     private String studentName;
+    private ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +23,7 @@ public class StudentDetailActivity extends AppCompatActivity {
         listView = findViewById(R.id.listViewStudentDetails);
         studentName = getIntent().getStringExtra("studentName");
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+        adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, options);
 
         listView.setAdapter(adapter);

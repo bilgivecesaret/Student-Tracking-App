@@ -6,11 +6,30 @@
     <string name="password">Password</string>
     <string name="login_button">Login</string>
     <string name="error_message">Invalid username or password</string>
-    <string name="studentWelcome">Hoşgeldin, Öğrenci!</string>
+    <string name="welcome_message">Welcome</string>
+    <string name="addStudentButton">Add New Student</string>
+    <string name="addBookButton">Add New Book</string>
+    <string name="addScheduleButton">Add New Schedule</string>
+    <string name="editTextSubject">Subject</string>
+    <string name="editTextStartDate">Start Date</string>
+    <string name="editTextEndDate">End Date</string>
+    <string name="saveScheduleButton">Save Schedule</string>
+
+
+
+
+
     <string name="bookProgressButton">📘 Kitap İlerlemesi</string>
     <string name="attendanceButton">🗓️ Yoklama Durumu</string>
     <string name="chartButton">📊 Grafiksel Gösterim</string>
     <string name="myScheduleButton">🗓️ Haftalık Program</string>
     <string name="myBooksButton">📚 Kitaplarım</string>
     <string name="bookProgressTextView">Book Progress</string>
+    <string name="attendanceTextView">Attendance</string>
+    <string name="chartTextView">Chart</string>
+    <string name="myScheduleTextView">My Schedule</string>
+    <string name="myBooksTextView">My Books</string>
+
+
+
 </resources>

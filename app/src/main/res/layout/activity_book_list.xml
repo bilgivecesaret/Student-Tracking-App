@@ -10,7 +10,7 @@
         android:id="@+id/addBookButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add New Book"/>
+        android:text="@string/addBookButton"/>
 
     <ListView
         android:id="@+id/bookListView"

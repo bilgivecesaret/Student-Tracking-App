@@ -17,10 +17,10 @@ public class MyBooksFragment extends Fragment {
     private ListView listView;
     private ArrayAdapter<String> adapter;
     private BookDAO bookDAO;
+    private Button addBookButton;
+    private String selectedBook, bookToDelete, title;
+    private List<String> books;
 
-    public MyBooksFragment() {
-        // Required empty public constructor
-    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -31,7 +31,7 @@ public class MyBooksFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         listView = view.findViewById(R.id.booksListView);
-        Button addBookButton = view.findViewById(R.id.addBookButton);
+        addBookButton = view.findViewById(R.id.addBookButton);
 
         bookDAO = new BookDAO(requireContext());
 
@@ -43,7 +43,7 @@ public class MyBooksFragment extends Fragment {
         addBookButton.setOnClickListener(v -> showAddBookDialog());
 
         listView.setOnItemClickListener((parent, view1, position, id) -> {
-            String selectedBook = adapter.getItem(position);
+            selectedBook = adapter.getItem(position);
             if (selectedBook != null) {
                 Intent intent = new Intent(getActivity(), TopicsListActivity.class);
                 intent.putExtra("bookTitle", selectedBook);
@@ -52,7 +52,7 @@ public class MyBooksFragment extends Fragment {
         });
 
         listView.setOnItemLongClickListener((parent, view12, position, id) -> {
-            String bookToDelete = adapter.getItem(position);
+            bookToDelete = adapter.getItem(position);
             if (bookToDelete != null) {
                 showDeleteDialog(bookToDelete);
             }
@@ -62,7 +62,7 @@ public class MyBooksFragment extends Fragment {
 
     private void refreshBookList() {
         adapter.clear();
-        List<String> books = bookDAO.getAllBooks();
+        books = bookDAO.getAllBooks();
         adapter.addAll(books);
     }
 
@@ -75,7 +75,7 @@ public class MyBooksFragment extends Fragment {
         builder.setView(input);
 
         builder.setPositiveButton("Add", (dialog, which) -> {
-            String title = input.getText().toString().trim();
+            title = input.getText().toString().trim();
             if (!title.isEmpty()) {
                 bookDAO.addBook(title);
                 refreshBookList();

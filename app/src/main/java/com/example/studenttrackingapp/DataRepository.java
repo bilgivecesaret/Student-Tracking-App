@@ -23,16 +23,6 @@ public class DataRepository {
     }
 
     public List<Book> getBooks() {
-        List<Book> books = new ArrayList<>();
-
-        List<Topic> topicList = new ArrayList<>();
-        topicList.add(new Topic("Algebra", Arrays.asList("Test 1", "Test 2")));
-        topicList.add(new Topic("Geometry", Arrays.asList("Test 1", "Test 2")));
-        topicList.add(new Topic("Calculus", Arrays.asList("Test 1", "Test 2")));
-
-        Book newBook = new Book("Math", topicList);
-
-        books.add(newBook);
         return books;
     }
 
