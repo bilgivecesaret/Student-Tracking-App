@@ -62,24 +62,7 @@ public class TopicsListActivity extends AppCompatActivity {
     }
 
     private void showAddTopicDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Add New Topic");
 
-        final EditText input = new EditText(this);
-        input.setHint("Topic title");
-        builder.setView(input);
-
-        builder.setPositiveButton("Add", (dialog, which) -> {
-            title = input.getText().toString().trim();
-            if (!title.isEmpty()) {
-                int bookId = Integer.parseInt(getIntent().getStringExtra("bookId"));
-                topicDAO.addTopic(bookId,title);
-                refreshTopicList();
-            }
-        });
-
-        builder.setNegativeButton("Cancel", null);
-        builder.show();
     }
 
     private void showDeleteDialog(String topicTitle) {

@@ -10,9 +10,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 1;
 
     // Tablo adları
+    public static final String TABLE_STUDENTS = "students";
     public static final String TABLE_BOOKS = "books";
     public static final String TABLE_TOPICS = "topics";
     public static final String TABLE_TESTS = "tests";
+
+    // Student sütunları
+    public static final String COLUMN_STUDENT_ID = "id";
+    public static final String COLUMN_STUDENT_NAME = "name";
+    public static final String COLUMN_STUDENT_USERNAME = "username";
+    public static final String COLUMN_STUDENT_PASSWORD = "password";
+
 
     // Book sütunları
     public static final String COLUMN_BOOK_ID = "id";
@@ -35,6 +43,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        db.execSQL("CREATE TABLE " + TABLE_STUDENTS + " (" +
+                COLUMN_STUDENT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_STUDENT_NAME + " TEXT, " + COLUMN_STUDENT_USERNAME + " TEXT, " +
+                COLUMN_STUDENT_PASSWORD + " TEXT)");
+
         db.execSQL("CREATE TABLE " + TABLE_BOOKS + " (" +
                 COLUMN_BOOK_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_BOOK_NAME + " TEXT)");
@@ -54,6 +67,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_STUDENTS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TESTS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TOPICS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_BOOKS);

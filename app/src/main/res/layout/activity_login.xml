@@ -15,8 +15,7 @@
         android:textColor="@android:color/white"
         android:textSize="20sp"
         android:textColorHint="@android:color/white"
-        android:inputType="text"
-        android:layout_marginTop="20dp"/>
+        android:inputType="text"/>
 
     <EditText
         android:id="@+id/passwordEditText"
@@ -27,16 +26,9 @@
         android:textColorHint="@android:color/white"
         android:hint="@string/password"
         android:inputType="textPassword"
-        android:layout_marginBottom="20dp"/>
+        android:layout_marginTop="6dp"/>
 
-    <Button
-        android:id="@+id/loginButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/login_button"
-        android:layout_marginTop="32dp"/>
-
-    <!-- Hatalı giriş durumunda görünen mesaj -->
+    <!-- Message displayed in case of incorrect entry -->
     <TextView
         android:id="@+id/errorMessageTextView"
         android:layout_width="wrap_content"
@@ -44,7 +36,17 @@
         android:text="@string/error_message"
         android:textColor="@android:color/holo_red_light"
         android:visibility="gone"
-        android:layout_marginTop="16dp"
-        android:textSize="12sp"/>
+        android:layout_gravity="center"
+        android:layout_marginTop="12dp"
+        android:textSize="18sp"/>
+
+    <Button
+        android:id="@+id/loginButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/login_button"
+        android:layout_gravity="center"
+        android:layout_marginTop="12dp"/>
+
 
 </LinearLayout>
