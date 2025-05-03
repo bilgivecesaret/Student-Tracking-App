@@ -38,6 +38,9 @@
         <activity
             android:name=".StudentTopicTestsActivity"
             android:exported="false"/>
+        <activity android:name=".StudentAssignedBooksActivity"/>
+        <activity android:name=".StudentViewTopicsActivity"/>
+
 
 
 

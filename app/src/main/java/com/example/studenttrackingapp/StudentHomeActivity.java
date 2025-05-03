@@ -8,49 +8,61 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class StudentHomeActivity extends AppCompatActivity {
-    Button bookProgressButton, attendanceButton, chartButton, myScheduleButton, myBooksButton;
-    String studentName;
-    TextView studentWelcome;
+
+    /* Ekran öğeleri */
+    private TextView studentWelcome;
+    private Button   bookProgressBtn, attendanceBtn,
+            chartBtn, scheduleBtn, booksBtn;
+
+    /* Veriler */
+    private String studentName;   // DB anahtarı olarak da kullanılacak
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_home);
 
-        myScheduleButton = findViewById(R.id.myScheduleButton);
-        myBooksButton = findViewById(R.id.myBooksButton);
-        bookProgressButton = findViewById(R.id.bookProgressButton);
-        attendanceButton = findViewById(R.id.attendanceButton);
-        chartButton = findViewById(R.id.chartButton);
-        studentWelcome = findViewById(R.id.studentWelcome);
+        /* -------- View bağlama -------- */
+        studentWelcome   = findViewById(R.id.studentWelcome);
+        bookProgressBtn  = findViewById(R.id.bookProgressButton);
+        attendanceBtn    = findViewById(R.id.attendanceButton);
+        chartBtn         = findViewById(R.id.chartButton);
+        scheduleBtn      = findViewById(R.id.myScheduleButton);
+        booksBtn         = findViewById(R.id.myBooksButton);
 
-
+        /* -------- Öğrenci adı -------- */
         studentName = getIntent().getStringExtra("student_name");
-        studentName = studentWelcome.getText() + "\t" + studentName + "!";
-        studentWelcome.setText(studentName);
+        if (studentName == null) studentName = "Mustafa";   // fallback
+        studentWelcome.setText("Welcome " + studentName + "!");
 
+        /* -------- Buton dinleyicileri -------- */
 
-        bookProgressButton.setOnClickListener(v ->
-                startActivity(new Intent(this, BookProgressActivity.class)));
-
-        attendanceButton.setOnClickListener(v ->
-                startActivity(new Intent(this, AttendanceActivity.class)));
-
-        chartButton.setOnClickListener(v ->
-                startActivity(new Intent(this, ProgressChartActivity.class)));
-
-
-        myScheduleButton.setOnClickListener(v -> {
-            Intent intent = new Intent(StudentHomeActivity.this, WeeklyScheduleActivity.class);
-            intent.putExtra("student_name", "Mustafa"); // Dinamik yapabilirsiniz
-            startActivity(intent);
+        // 1) Kitap ilerleme ekranı
+        bookProgressBtn.setOnClickListener(v -> {
+            Intent in = new Intent(this, BookProgressActivity.class);
+            in.putExtra("student_name", studentName);
+            startActivity(in);
         });
 
-        myBooksButton.setOnClickListener(v -> {
-            Intent intent = new Intent(StudentHomeActivity.this, TopicsListActivity.class);
-            intent.putExtra("book_name", "Math");
-            startActivity(intent);
+        // 2) Devam/İstatistik örnek butonları
+        attendanceBtn.setOnClickListener(
+                v -> startActivity(new Intent(this, AttendanceActivity.class)));
+
+        chartBtn.setOnClickListener(
+                v -> startActivity(new Intent(this, ProgressChartActivity.class)));
+
+        // 3) Kişisel haftalık program
+        scheduleBtn.setOnClickListener(v -> {
+            Intent in = new Intent(this, WeeklyScheduleActivity.class);
+            in.putExtra("student_name", studentName);
+            startActivity(in);
+        });
+
+        // 4) Öğrencinin kitap/konu listesi (yalnızca görüntüleme)
+        booksBtn.setOnClickListener(v -> {
+            Intent in = new Intent(this, StudentAssignedBooksActivity.class);
+            in.putExtra("student_name", studentName);
+            startActivity(in);
         });
     }
 }
-

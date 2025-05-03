@@ -1,41 +1,87 @@
 package com.example.studenttrackingapp;
 
 import android.os.Bundle;
-import android.widget.ListView;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Öğrenci – Öğretmeninin atadığı kitaplarda ne kadar test bitirdiğini görür.
+ * Sadece okunur; öğrenci işaretleme yapamaz.
+ */
 public class BookProgressActivity extends AppCompatActivity {
 
-    private ListView listView;
     private ArrayAdapter<String> adapter;
-    private String studentName;
+
+    private String        student;          // oturum açan öğrenci
+    private AssignmentDAO assignmentDAO;
+    private TopicDAO      topicDAO;
+    private TestDAO       testDAO;
+    private ProgressDAO   progressDAO;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onCreate(Bundle s) {
+        super.onCreate(s);
         setContentView(R.layout.activity_book_progress);
 
-        listView = findViewById(R.id.bookProgressListView);
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
+        /* INTENT’ten öğrenci adı */
+        student = getIntent().getStringExtra("student_name");
+        if (student == null) student = "Mustafa";   // varsayılan
 
-        studentName = getIntent().getStringExtra("student_name");
-        if (studentName == null) studentName = "Mustafa"; // fallback
+        /* DAO’lar */
+        assignmentDAO = new AssignmentDAO(this);
+        topicDAO      = new TopicDAO(this);
+        testDAO       = new TestDAO(this);
+        progressDAO   = new ProgressDAO(this);
 
-        List<DataRepository.StudentTopicAssignment> assignments =
-                DataRepository.getInstance().getAssignmentsForStudent(studentName);
+        /* ListView hazırlığı */
+        ListView lv = findViewById(R.id.bookProgressListView);
+        adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_list_item_1, new ArrayList<>());
+        lv.setAdapter(adapter);
 
-        for (DataRepository.StudentTopicAssignment a : assignments) {
-            adapter.add("Kitap: " + a.book +
-                    "\nKonu: " + a.topic +
-                    "\nTarih: " + a.dateRange +
-                    "\nTamamlanma: %50"); // Örnek: ilerleme verisi sabit
+        loadProgress();
+    }
+
+    /** Her atanan kitap için ilerleme yüzdesini hesapla ve listede göster */
+    private void loadProgress() {
+        adapter.clear();
+
+        /* 1 – Bu öğrenciye atanmış kitaplar */
+        List<String> myBooks = assignmentDAO.getBooksForStudent(student);
+        if (myBooks.isEmpty()) {
+            adapter.add("You have no assigned books yet.");
+            return;
         }
 
-        listView.setAdapter(adapter);
+        for (String book : myBooks) {
+            int totalTests = 0;
+            int doneTests  = 0;
+
+            /* 2 – Kitabın konuları */
+            List<String> topics = topicDAO.getAllTopics(book);
+
+            for (String topic : topics) {
+                /* 3 – O konudaki testler */
+                List<String> tests = testDAO.getAllTests(topic);
+                totalTests += tests.size();
+
+                for (String test : tests) {
+                    if (progressDAO.isCompleted(student, topic, test)) doneTests++;
+                }
+            }
+
+            String pct = totalTests == 0 ? "0%" :
+                    (doneTests * 100 / totalTests) + "%";
+
+            adapter.add("Book: " + book +
+                    "\nCompleted: " + doneTests + "/" + totalTests +
+                    " (" + pct + ")");
+        }
     }
 }
-
