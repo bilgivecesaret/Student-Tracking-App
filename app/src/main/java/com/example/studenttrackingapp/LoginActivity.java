@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.studenttrackingapp.preferences.UserPreferences;
+
 public class LoginActivity extends AppCompatActivity {
 
     private EditText usernameEditText, passwordEditText;
@@ -33,20 +35,25 @@ public class LoginActivity extends AppCompatActivity {
             String username = usernameEditText.getText().toString().trim();
             String password = passwordEditText.getText().toString().trim();
 
+            StudentDAO studentDAO = new StudentDAO(LoginActivity.this);
+
             if (username.equals("teacher") && password.equals("123")) {
-                // If the teacher logs in, they will be directed to TeacherActivity
                 Intent intent = new Intent(LoginActivity.this, TeacherActivity.class);
                 intent.putExtra("teacher_name", "Kemal");
                 startActivity(intent);
-            } else if (username.equals("student") && password.equals("123")) {
-                // If the student logs in, they will be directed to StudentHomeActivity
-                Intent intent = new Intent(new Intent(LoginActivity.this, StudentHomeActivity.class));
-                intent.putExtra("student_name", "Mustafa");
+            } else if (studentDAO.validateStudentLogin(username, password)) {
+                // Giriş başarılıysa oturum bilgilerini kaydet
+                UserPreferences.setUsername(LoginActivity.this, username);
+                UserPreferences.setLoggedIn(LoginActivity.this, true);
+
+                Intent intent = new Intent(LoginActivity.this, StudentHomeActivity.class);
+                String name = studentDAO.getStudentName(username);
+                intent.putExtra("student_name", name);
                 startActivity(intent);
             } else {
-                // In case of incorrect entry, an error message is displayed.
                 errorMessageTextView.setVisibility(View.VISIBLE);
             }
         });
+
     }
 }

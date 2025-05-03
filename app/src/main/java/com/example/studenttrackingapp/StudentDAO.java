@@ -18,6 +18,42 @@ public class StudentDAO {
         dbHelper = new DatabaseHelper(context);
     }
 
+    public boolean validateStudentLogin(String username, String password) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        Cursor cursor = db.query(DatabaseHelper.TABLE_STUDENTS,
+                new String[]{DatabaseHelper.COLUMN_STUDENT_ID},
+                DatabaseHelper.COLUMN_STUDENT_USERNAME + "=? AND " +
+                        DatabaseHelper.COLUMN_STUDENT_PASSWORD + "=?",
+                new String[]{username, password},
+                null, null, null);
+
+        boolean isValid = cursor.moveToFirst();
+        cursor.close();
+        db.close();
+        return isValid;
+    }
+
+    public String getStudentName(String username) {
+        String name = "";
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        Cursor cursor = db.query(DatabaseHelper.TABLE_STUDENTS,
+                new String[]{DatabaseHelper.COLUMN_STUDENT_NAME},
+                DatabaseHelper.COLUMN_STUDENT_USERNAME + "=?",
+                new String[]{username},
+                null, null, null);
+
+        if (cursor.moveToFirst()) {
+            name = cursor.getString(0);
+        }
+
+        cursor.close();
+        db.close();
+        return name;
+    }
+
+
     public int addStudent(String name, String username, String password) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
