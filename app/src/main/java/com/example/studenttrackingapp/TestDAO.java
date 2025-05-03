@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +12,8 @@ import java.util.List;
 public class TestDAO {
 
     private DatabaseHelper dbHelper;
+
+    private static final String TAG = "TestDAO";
 
     public TestDAO(Context context) {
         dbHelper = new DatabaseHelper(context);
@@ -84,26 +87,39 @@ public class TestDAO {
         return testList;
     }
 
-    public List<String> getAllTests() {
-        List<String> testList = new ArrayList<>();
+
+    public List<String> getAllTests(String topicTitle) {
+        List<String> tests = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        String query = "SELECT " + DatabaseHelper.COLUMN_TEST_NAME +
-                " FROM " + DatabaseHelper.TABLE_TESTS;
+        Cursor topicCursor = db.query(DatabaseHelper.TABLE_TOPICS,
+                new String[]{DatabaseHelper.COLUMN_TOPIC_ID},
+                DatabaseHelper.COLUMN_TOPIC_NAME + " = ?",
+                new String[]{topicTitle}, null, null, null);
 
-        Cursor cursor = db.rawQuery(query, null);
+        if (topicCursor.moveToFirst()) {
+            int topicId = topicCursor.getInt(0);
+            topicCursor.close();
 
-        if (cursor.moveToFirst()) {
-            do {
-                testList.add(cursor.getString(0));
-            } while (cursor.moveToNext());
+            Cursor testCursor = db.query(DatabaseHelper.TABLE_TESTS,
+                    new String[]{DatabaseHelper.COLUMN_TEST_NAME},
+                    DatabaseHelper.COLUMN_TEST_TOPIC_ID + " = ?",
+                    new String[]{String.valueOf(topicId)}, null, null, null);
+
+            if (testCursor.moveToFirst()) {
+                do {
+                    String testName = testCursor.getString(0); // Doğru cursor
+                    tests.add(testName);
+                } while (testCursor.moveToNext());
+            }
+            testCursor.close();
+        } else {
+            topicCursor.close();
+            Log.e(TAG, "Belirtilen topic bulunamadı: " + topicTitle);
         }
 
-        cursor.close();
         db.close();
-
-        return testList;
+        return tests;
     }
-
 
 }

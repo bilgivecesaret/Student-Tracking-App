@@ -1,6 +1,5 @@
 package com.example.studenttrackingapp;
 
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -28,7 +27,8 @@ public class TestActivity extends AppCompatActivity {
         testListView = findViewById(R.id.testListView);
         testDAO = new TestDAO(this);
 
-        testList = testDAO.getAllTests();
+        String topicTitle = getIntent().getStringExtra("topicTitle");
+        testList = testDAO.getAllTests(topicTitle);
         testAdapter = new TestAdapter(this, testList);
         testListView.setAdapter(testAdapter);
 
