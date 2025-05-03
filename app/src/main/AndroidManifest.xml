@@ -32,6 +32,13 @@
         <activity android:name=".ProgressChartActivity" />
         <activity android:name=".WeeklyScheduleActivity" />
         <activity android:name=".TopicsListActivity" />
+        <activity android:name=".TeacherStudentDetailActivity"
+            android:exported="false"/>
+        <activity android:name=".StudentBookTopicsActivity" />
+        <activity
+            android:name=".StudentTopicTestsActivity"
+            android:exported="false"/>
+
 
 
 
