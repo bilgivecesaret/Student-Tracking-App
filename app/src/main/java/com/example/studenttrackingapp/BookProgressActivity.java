@@ -22,7 +22,7 @@ public class BookProgressActivity extends AppCompatActivity {
 
     private ArrayAdapter<String> adapter;
 
-    private String        student;          // oturum açan öğrenci
+    private String student;          // oturum açan öğrenci
     private AssignmentPreferences assignmentPreferences;
     private TopicDAO topicDAO;
     private TestDAO testDAO;
@@ -85,7 +85,8 @@ public class BookProgressActivity extends AppCompatActivity {
             adapter.add("Book: " + book +
                     "\nCompleted: " + doneTests + "/" + totalTests +
                     " (" + pct + ")");
-            adapter.notifyDataSetChanged();
         }
+
+        adapter.notifyDataSetChanged();
     }
 }

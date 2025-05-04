@@ -12,6 +12,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.studenttrackingapp.DAO.BookDAO;
+import com.example.studenttrackingapp.DAO.TopicDAO;
 import com.example.studenttrackingapp.Preferences.AssignmentPreferences;
 
 import java.util.ArrayList;
@@ -54,9 +55,10 @@ public class TeacherStudentDetailActivity extends AppCompatActivity {
                 android.R.layout.simple_list_item_1, assignedBooks);
         assignedList.setAdapter(adapter);
 
+        refreshTopicList();
+
         assignBookBtn.setOnClickListener(v -> {
             showAssignDialog();
-            adapter.notifyDataSetChanged();
         });
         assignedList.setOnItemClickListener((p, v, pos, id) -> {
             String bookTitle = adapter.getItem(pos);
@@ -71,11 +73,15 @@ public class TeacherStudentDetailActivity extends AppCompatActivity {
             String toDelete = adapter.getItem(pos);
             if (toDelete != null){
                 showDeleteDialog(toDelete);
-                adapter.notifyDataSetChanged();
             }
             return true;
         });
+    }
 
+    private void refreshTopicList() {
+        adapter.clear();
+        assignedBooks = assignmentPreferences.getBooksForStudent(studentName);
+        adapter.addAll(assignedBooks);
     }
 
     /** Öğretmenin kitap listesinden seçim penceresi */
@@ -100,6 +106,7 @@ public class TeacherStudentDetailActivity extends AppCompatActivity {
                     if (!assignedBooks.contains(chosen)) {
                         assignmentPreferences.assignBook(studentName, chosen);
                         assignedBooks.add(chosen);
+                        refreshTopicList();
                     }
                 })
                 .setNegativeButton("Cancel", null)
@@ -113,6 +120,8 @@ public class TeacherStudentDetailActivity extends AppCompatActivity {
                 .setMessage("Delete \"" + book + "\"?")
                 .setPositiveButton("Delete", (d, w) -> {
                     assignmentPreferences.unassignBook(studentName,book);
+                    assignedBooks.remove(book);
+                    refreshTopicList();
                 })
                 .setNegativeButton("Cancel", null)
                 .show();
