@@ -15,7 +15,7 @@ public class StudentTopicTestsActivity extends AppCompatActivity {
 
     private String student, topic;
     private ArrayAdapter<String> adapter;
-    private StudentProgressPreferences progDAO;
+    private StudentProgressPreferences studentProgressPreferences;
 
     @Override protected void onCreate(Bundle s) {
         super.onCreate(s);
@@ -25,11 +25,11 @@ public class StudentTopicTestsActivity extends AppCompatActivity {
         topic   = getIntent().getStringExtra("topic_name");
 
         TestDAO testDAO = new TestDAO(this);
-        progDAO          = new StudentProgressPreferences(this);
+        studentProgressPreferences = new StudentProgressPreferences(this);
 
         List<String> rows = new ArrayList<>();
         for (String t : testDAO.getTestsByTopicName(topic)) {
-            boolean done = progDAO.isCompleted(student, topic + "::" + t);
+            boolean done = studentProgressPreferences.isCompleted(student, topic + "::" + t);
             rows.add((done ? "☑ " : "☐ ") + t);
         }
 
@@ -42,10 +42,11 @@ public class StudentTopicTestsActivity extends AppCompatActivity {
         lv.setOnItemClickListener((p,v,pos,id)->{
             String line   = adapter.getItem(pos);
             String test   = line.substring(2);     // satırdan test adını al
-            boolean done  = !progDAO.isCompleted(student, topic + "::" + test);
-            progDAO.setCompleted(student, topic + "::" + test, done);
+            boolean done  = !studentProgressPreferences.isCompleted(student, topic + "::" + test);
+            studentProgressPreferences.setCompleted(student, topic + "::" + test, done);
             adapter.remove(line);
             adapter.insert((done?"☑ ":"☐ ")+test, pos);
+            adapter.notifyDataSetChanged();
         });
     }
 }

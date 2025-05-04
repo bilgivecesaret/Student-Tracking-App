@@ -48,8 +48,11 @@ public class StudentHomeActivity extends AppCompatActivity {
         attendanceBtn.setOnClickListener(
                 v -> startActivity(new Intent(this, AttendanceActivity.class)));
 
-        chartBtn.setOnClickListener(
-                v -> startActivity(new Intent(this, ProgressChartActivity.class)));
+        chartBtn.setOnClickListener(v -> {
+            Intent in = new Intent(this, ProgressChartActivity.class);
+            in.putExtra("student_name", studentName);
+            startActivity(in);
+        });
 
         // 3) Kişisel haftalık program
         scheduleBtn.setOnClickListener(v -> {
