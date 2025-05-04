@@ -14,6 +14,8 @@
     <string name="editTextStartDate">Start Date</string>
     <string name="editTextEndDate">End Date</string>
     <string name="saveScheduleButton">Save Schedule</string>
+    <string name="addTopicButton">Add New Topic</string>
+    <string name="addTestButton">Add New Test</string>
 
 
 

@@ -25,7 +25,16 @@ public class TestDAO {
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.COLUMN_TEST_TOPIC_ID, topicId);
         values.put(DatabaseHelper.COLUMN_TEST_NAME, testName);
-        db.insert(DatabaseHelper.TABLE_TESTS, null, values);
+        long id = db.insert(DatabaseHelper.TABLE_TESTS, null, values);
+        db.close();
+        Log.d(TAG,  testName + " eklendi: " + " - Topic ID: " + id);
+    }
+
+    public void deleteTest(String title) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.delete(DatabaseHelper.TABLE_TESTS,
+                DatabaseHelper.COLUMN_TEST_NAME + " = ?",
+                new String[]{title});
         db.close();
     }
 

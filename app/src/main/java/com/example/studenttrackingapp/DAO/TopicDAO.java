@@ -61,6 +61,7 @@ public class TopicDAO {
         values.put(DatabaseHelper.COLUMN_TOPIC_BOOK_ID, bookId);  // Doğru sütun adı
         values.put(DatabaseHelper.COLUMN_TOPIC_NAME, topicName);
         long id = db.insert(DatabaseHelper.TABLE_TOPICS, null, values);
+        Log.d(TAG, topicName + " eklendi: " + topicName + " - Book ID: " + id);
         db.close();
         return (int) id;
     }
@@ -117,20 +118,19 @@ public class TopicDAO {
     }
 
     // Konu ID'sini getir (kitap adı + konu adı ile)
-    public int getTopicId(int bookId, String topicName) {
+    public int getTopicId(String title) {
+        int topicId = -1;
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.query(DatabaseHelper.TABLE_TOPICS,
                 new String[]{DatabaseHelper.COLUMN_TOPIC_ID},
-                DatabaseHelper.COLUMN_TOPIC_BOOK_ID + " = ? AND " +
-                        DatabaseHelper.COLUMN_TOPIC_NAME + " = ?",
-                new String[]{String.valueOf(bookId), topicName},
+                DatabaseHelper.COLUMN_TOPIC_NAME + "=?",
+                new String[]{title},
                 null, null, null);
 
-        int topicId = -1;
         if (cursor.moveToFirst()) {
             topicId = cursor.getInt(0);
         }
-
+        Log.d(TAG, "Topic id: " + topicId);
         cursor.close();
         db.close();
         return topicId;

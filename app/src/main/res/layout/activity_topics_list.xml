@@ -10,7 +10,7 @@
         android:id="@+id/addTopicButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add New Topic" />
+        android:text="@string/addTopicButton" />
 
     <ListView
         android:id="@+id/topicsListView"

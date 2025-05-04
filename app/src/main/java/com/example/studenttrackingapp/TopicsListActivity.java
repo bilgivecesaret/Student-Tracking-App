@@ -43,6 +43,7 @@ public class TopicsListActivity extends AppCompatActivity {
             if (selectedTopic != null) {
                 Intent intent = new Intent(this, TestActivity.class);
                 intent.putExtra("topicTitle", selectedTopic);
+                intent.putExtra("topicId", topicDAO.getTopicId(selectedTopic));
                 startActivity(intent);
             }
         });
