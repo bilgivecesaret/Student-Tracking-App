@@ -14,7 +14,7 @@ public class WeeklyScheduleActivity extends AppCompatActivity {
     private ListView listView;
     private ArrayAdapter<String> adapter;
     private String studentName = "Mustafa";  // You could pass this dynamically
-    private List<DataRepository.StudentTopicAssignment> assignments;
+    //private ... assignments;
 
 
     @Override
@@ -31,18 +31,18 @@ public class WeeklyScheduleActivity extends AppCompatActivity {
 
         listView = findViewById(R.id.weeklyScheduleListView);
 
-        assignments = DataRepository.getInstance().getAssignmentsForStudent(studentName);
+        // assignments = .....(studentName);
 
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
-        for (DataRepository.StudentTopicAssignment assignment : assignments) {
+        /*for (...  : assignments) {
             adapter.add("Subject: " + assignment.topic +
                     "\nBook: " + assignment.book +
                     "\nDate Range: " + assignment.dateRange);
-        }
+        }*/
         listView.setAdapter(adapter);
 
         listView.setOnItemLongClickListener((parent, view, position, id) -> {
-            DataRepository.StudentTopicAssignment assignment = assignments.get(position);
+            // .... assignment = assignments.get(position);
 
             new AlertDialog.Builder(this)
                     .setTitle("Modify Assignment")
@@ -50,20 +50,20 @@ public class WeeklyScheduleActivity extends AppCompatActivity {
                         if (which == 0) { // Edit
                             EditText input = new EditText(this);
                             input.setHint("Enter new date range");
-                            input.setText(assignment.dateRange);
+                            //input.setText(assignment.dateRange);
 
                             new AlertDialog.Builder(this)
                                     .setTitle("Edit Date Range")
                                     .setView(input)
                                     .setPositiveButton("Save", (d, w) -> {
-                                        assignment.dateRange = input.getText().toString();
+                                        //assignment.dateRange = input.getText().toString();
                                         adapter.notifyDataSetChanged();
                                     })
                                     .setNegativeButton("Cancel", null)
                                     .show();
 
                         } else if (which == 1) { // Delete
-                            assignments.remove(position);
+                            //assignments.remove(position);
                             adapter.notifyDataSetChanged();
                         }
                     })
@@ -74,14 +74,14 @@ public class WeeklyScheduleActivity extends AppCompatActivity {
 
     }
     private void refreshAssignments() {
-        assignments = DataRepository.getInstance().getAssignmentsForStudent(studentName);
+        //assignments = ....(studentName);
 
         adapter.clear();
-        for (DataRepository.StudentTopicAssignment assignment : assignments) {
+     /*   for (... assignment : assignments) {
             adapter.add("Subject: " + assignment.topic +
                     "\nBook: " + assignment.book +
                     "\nDate Range: " + assignment.dateRange);
-        }
+        }*/
         adapter.notifyDataSetChanged();
     }
 

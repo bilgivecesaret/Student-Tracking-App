@@ -74,9 +74,11 @@ public class BookDAO {
     // Kitap sil (başlığa göre)
     public void deleteBook(String title) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
+
         db.delete(DatabaseHelper.TABLE_BOOKS,
                 DatabaseHelper.COLUMN_BOOK_NAME + " = ?",
                 new String[]{title});
+        Log.d(TAG, "Kitap silindi: " + title);
         db.close();
     }
 

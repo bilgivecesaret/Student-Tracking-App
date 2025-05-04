@@ -51,7 +51,6 @@ public class CalendarActivity extends AppCompatActivity {
             String selectedBook = "Math";
             dateRange = "2025-05-01 to 2025-05-07";
 
-            DataRepository.getInstance().assignTopicToStudent("Mustafa", selectedTopic, selectedBook, dateRange, true);
 
 
             // Pass back to ScheduleListActivity

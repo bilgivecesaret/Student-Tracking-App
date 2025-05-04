@@ -31,7 +31,6 @@ public class TeacherStudentDetailActivity extends AppCompatActivity {
     private List<String> assignedBooks = new ArrayList<>();
 
     private AssignmentPreferences assignmentPreferences;
-    private DataRepository repo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +46,6 @@ public class TeacherStudentDetailActivity extends AppCompatActivity {
 
         bookDAO      = new BookDAO(this);
         assignmentPreferences = new AssignmentPreferences(this);
-        repo          = DataRepository.getInstance();
 
         // Öğrenciye önceki atanan kitapları getir
         assignedBooks.addAll(assignmentPreferences.getBooksForStudent(studentName));
@@ -65,7 +63,12 @@ public class TeacherStudentDetailActivity extends AppCompatActivity {
             startActivity(in);
         });
 
-
+        /* 2️⃣  Uzun basınca dersi sil */
+        assignedList.setOnItemLongClickListener((p, v12, pos, id) -> {
+            String toDelete = adapter.getItem(pos);
+            if (toDelete != null) showDeleteDialog(toDelete);
+            return true;
+        });
 
     }
 
@@ -98,4 +101,16 @@ public class TeacherStudentDetailActivity extends AppCompatActivity {
                 .show();
     }
 
+    /** Silme onayı */
+    private void showDeleteDialog(String book) {
+        new AlertDialog.Builder(this)
+                .setTitle("Delete Student")
+                .setMessage("Delete \"" + book + "\"?")
+                .setPositiveButton("Delete", (d, w) -> {
+                    bookDAO.deleteBook(book);
+                    adapter.notifyDataSetChanged();
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
 }

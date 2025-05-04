@@ -49,8 +49,8 @@ public class SubjectsListActivity extends AppCompatActivity {
 
     private void refreshSubjects() {
         adapter.clear();
-        List<String> subjects = DataRepository.getInstance().getTopicsForBook(bookTitle);
-        adapter.addAll(subjects);
+        //List<String> subjects = ....(bookTitle);
+        //adapter.addAll(subjects);
     }
 
     private void showAddSubjectDialog() {
@@ -64,7 +64,7 @@ public class SubjectsListActivity extends AppCompatActivity {
         builder.setPositiveButton("Add", (dialog, which) -> {
             String subject = input.getText().toString().trim();
             if (!subject.isEmpty()) {
-                DataRepository.getInstance().addTopicToBook(bookTitle, subject);
+                //....(bookTitle, subject);
                 refreshSubjects();
             }
         });
