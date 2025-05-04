@@ -1,4 +1,4 @@
-package com.example.studenttrackingapp;
+package com.example.studenttrackingapp.Adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -6,6 +6,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.studenttrackingapp.Book;
+import com.example.studenttrackingapp.R;
 
 import java.util.List;
 

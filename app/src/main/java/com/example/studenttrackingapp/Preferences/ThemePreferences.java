@@ -1,4 +1,4 @@
-package com.example.studenttrackingapp.preferences;
+package com.example.studenttrackingapp.Preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;

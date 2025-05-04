@@ -1,14 +1,14 @@
-package com.example.studenttrackingapp;
+package com.example.studenttrackingapp.Preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
-public class ProgressDAO {
+public class ProgressPreferences {
 
     private static final String PREF = "completed_tests";
     private final SharedPreferences prefs;
 
-    public ProgressDAO(Context ctx) {
+    public ProgressPreferences(Context ctx) {
         prefs = ctx.getSharedPreferences(PREF, Context.MODE_PRIVATE);
     }
 

@@ -3,9 +3,13 @@ package com.example.studenttrackingapp;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.studenttrackingapp.DAO.TestDAO;
+import com.example.studenttrackingapp.DAO.TopicDAO;
+import com.example.studenttrackingapp.Preferences.AssignmentPreferences;
+import com.example.studenttrackingapp.Preferences.ProgressPreferences;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,10 +23,10 @@ public class BookProgressActivity extends AppCompatActivity {
     private ArrayAdapter<String> adapter;
 
     private String        student;          // oturum açan öğrenci
-    private AssignmentDAO assignmentDAO;
-    private TopicDAO      topicDAO;
-    private TestDAO       testDAO;
-    private ProgressDAO   progressDAO;
+    private AssignmentPreferences assignmentPreferences;
+    private TopicDAO topicDAO;
+    private TestDAO testDAO;
+    private ProgressPreferences progressPreferences;
 
     @Override
     protected void onCreate(Bundle s) {
@@ -34,10 +38,10 @@ public class BookProgressActivity extends AppCompatActivity {
         if (student == null) student = "Mustafa";   // varsayılan
 
         /* DAO’lar */
-        assignmentDAO = new AssignmentDAO(this);
+        assignmentPreferences = new AssignmentPreferences(this);
         topicDAO      = new TopicDAO(this);
         testDAO       = new TestDAO(this);
-        progressDAO   = new ProgressDAO(this);
+        progressPreferences = new ProgressPreferences(this);
 
         /* ListView hazırlığı */
         ListView lv = findViewById(R.id.bookProgressListView);
@@ -53,7 +57,7 @@ public class BookProgressActivity extends AppCompatActivity {
         adapter.clear();
 
         /* 1 – Bu öğrenciye atanmış kitaplar */
-        List<String> myBooks = assignmentDAO.getBooksForStudent(student);
+        List<String> myBooks = assignmentPreferences.getBooksForStudent(student);
         if (myBooks.isEmpty()) {
             adapter.add("You have no assigned books yet.");
             return;
@@ -72,7 +76,7 @@ public class BookProgressActivity extends AppCompatActivity {
                 totalTests += tests.size();
 
                 for (String test : tests) {
-                    if (progressDAO.isCompleted(student, topic, test)) doneTests++;
+                    if (progressPreferences.isCompleted(student, topic, test)) doneTests++;
                 }
             }
 

@@ -1,10 +1,13 @@
-package com.example.studenttrackingapp;
+package com.example.studenttrackingapp.Adapter;
 
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
+
+import com.example.studenttrackingapp.MyBooksFragment;
+import com.example.studenttrackingapp.MyStudentsFragment;
 
 public class TeacherPagerAdapter extends FragmentStateAdapter {
 

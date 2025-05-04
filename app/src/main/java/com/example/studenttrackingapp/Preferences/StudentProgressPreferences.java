@@ -1,19 +1,18 @@
-package com.example.studenttrackingapp;
+package com.example.studenttrackingapp.Preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 /** 🟢  Sadece öğrencinin test bitirme bilgilerini tutar */
-public class StudentProgressDAO {
+public class StudentProgressPreferences {
 
     private static final String PREF = "student_completed_tests";
     private final SharedPreferences prefs;
 
-    public StudentProgressDAO(Context ctx) {
+    public StudentProgressPreferences(Context ctx) {
         prefs = ctx.getSharedPreferences(PREF, Context.MODE_PRIVATE);
     }
 

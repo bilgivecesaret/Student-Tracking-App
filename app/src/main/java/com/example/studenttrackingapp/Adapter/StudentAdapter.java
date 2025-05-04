@@ -1,4 +1,4 @@
-package com.example.studenttrackingapp;
+package com.example.studenttrackingapp.Adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;

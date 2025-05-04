@@ -11,6 +11,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.studenttrackingapp.DAO.BookDAO;
+import com.example.studenttrackingapp.Preferences.AssignmentPreferences;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,7 +30,7 @@ public class TeacherStudentDetailActivity extends AppCompatActivity {
     private ArrayAdapter<String> adapter;
     private List<String> assignedBooks = new ArrayList<>();
 
-    private AssignmentDAO  assignmentDAO;
+    private AssignmentPreferences assignmentPreferences;
     private DataRepository repo;
 
     @Override
@@ -43,11 +46,11 @@ public class TeacherStudentDetailActivity extends AppCompatActivity {
         studentNameTxt.setText(studentName);
 
         bookDAO      = new BookDAO(this);
-        assignmentDAO = new AssignmentDAO(this);
+        assignmentPreferences = new AssignmentPreferences(this);
         repo          = DataRepository.getInstance();
 
         // Öğrenciye önceki atanan kitapları getir
-        assignedBooks.addAll(assignmentDAO.getBooksForStudent(studentName));
+        assignedBooks.addAll(assignmentPreferences.getBooksForStudent(studentName));
 
         adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, assignedBooks);
@@ -86,7 +89,7 @@ public class TeacherStudentDetailActivity extends AppCompatActivity {
                 .setItems(items, (d, which) -> {
                     String chosen = teacherBooks.get(which);
                     if (!assignedBooks.contains(chosen)) {
-                        assignmentDAO.assignBook(studentName, chosen);
+                        assignmentPreferences.assignBook(studentName, chosen);
                         assignedBooks.add(chosen);
                         adapter.notifyDataSetChanged();
                     }

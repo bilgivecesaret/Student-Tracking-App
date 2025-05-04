@@ -9,7 +9,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.studenttrackingapp.preferences.UserPreferences;
+import com.example.studenttrackingapp.DAO.StudentDAO;
+import com.example.studenttrackingapp.Preferences.UserPreferences;
 
 public class LoginActivity extends AppCompatActivity {
 

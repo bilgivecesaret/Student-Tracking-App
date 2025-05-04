@@ -1,4 +1,4 @@
-package com.example.studenttrackingapp;
+package com.example.studenttrackingapp.Preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -8,12 +8,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class AssignmentDAO {
+public class AssignmentPreferences {
 
     private static final String PREF  = "student_assignments";
     private SharedPreferences prefs;
 
-    public AssignmentDAO(Context ctx) {
+    public AssignmentPreferences(Context ctx) {
         prefs = ctx.getSharedPreferences(PREF, Context.MODE_PRIVATE);
     }
 

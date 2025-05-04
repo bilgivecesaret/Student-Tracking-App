@@ -7,6 +7,8 @@ import android.widget.*;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.studenttrackingapp.DAO.TopicDAO;
+
 import java.util.List;
 
 public class TopicsListActivity extends AppCompatActivity {

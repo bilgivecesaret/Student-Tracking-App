@@ -1,9 +1,12 @@
-package com.example.studenttrackingapp;
+package com.example.studenttrackingapp.Adapter;
 
 import android.content.Context;
 import android.view.*;
 import android.widget.*;
 import androidx.annotation.NonNull;
+
+import com.example.studenttrackingapp.Topic;
+
 import java.util.List;
 
 public class TopicAdapter extends ArrayAdapter<Topic> {

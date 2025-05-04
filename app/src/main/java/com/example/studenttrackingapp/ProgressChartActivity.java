@@ -38,17 +38,17 @@ public class ProgressChartActivity extends AppCompatActivity {
 
         // Pie chart verisi
         ArrayList<PieEntry> entries = new ArrayList<>();
-        if (completed > 0) entries.add(new PieEntry(completed, "Tamamlanan"));
-        if (notCompleted > 0) entries.add(new PieEntry(notCompleted, "Tamamlanmayan"));
+        if (completed > 0) entries.add(new PieEntry(completed, "Done"));
+        if (notCompleted > 0) entries.add(new PieEntry(notCompleted, "To Do"));
 
-        PieDataSet dataSet = new PieDataSet(entries, "İlerleme Durumu");
+        PieDataSet dataSet = new PieDataSet(entries, "Progress");
         dataSet.setColors(new int[]{R.color.teal_700, R.color.purple_200}, this);
         dataSet.setValueTextSize(14f);
 
         PieData data = new PieData(dataSet);
         pieChart.setData(data);
         pieChart.getDescription().setEnabled(false);
-        pieChart.setCenterText("Konu İlerlemesi");
+        pieChart.setCenterText("Topic Progress");
         pieChart.setCenterTextSize(18f);
         pieChart.invalidate();  // Grafiği yenile
     }

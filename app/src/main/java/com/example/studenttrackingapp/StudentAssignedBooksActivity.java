@@ -6,6 +6,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.studenttrackingapp.Preferences.AssignmentPreferences;
+
 import java.util.List;
 
 /** Öğrenci: kendisine atanmış kitap listesini görür */
@@ -13,16 +16,16 @@ public class StudentAssignedBooksActivity extends AppCompatActivity {
 
     private String studentName;
     private ArrayAdapter<String> adapter;
-    private AssignmentDAO assignDAO;
+    private AssignmentPreferences assignmentPreferences;
 
     @Override protected void onCreate(Bundle s) {
         super.onCreate(s);
         setContentView(R.layout.activity_student_assigned_books);
 
         studentName = getIntent().getStringExtra("student_name");
-        assignDAO   = new AssignmentDAO(this);
+        assignmentPreferences   = new AssignmentPreferences(this);
 
-        List<String> books = assignDAO.getBooksForStudent(studentName);
+        List<String> books = assignmentPreferences.getBooksForStudent(studentName);
         if (books.isEmpty())
             Toast.makeText(this,"No assigned book yet.",Toast.LENGTH_SHORT).show();
 

@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import androidx.appcompat.app.AppCompatActivity;
-import com.example.studenttrackingapp.preferences.UserPreferences;
+import com.example.studenttrackingapp.Preferences.UserPreferences;
 import java.util.ArrayList;
 
 public class MyTestsActivity extends AppCompatActivity {

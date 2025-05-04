@@ -1,4 +1,4 @@
-package com.example.studenttrackingapp;
+package com.example.studenttrackingapp.DAO;
 
 import android.content.ContentValues;
 import android.content.Context;

@@ -4,6 +4,11 @@ import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.studenttrackingapp.DAO.TestDAO;
+import com.example.studenttrackingapp.DAO.TopicDAO;
+import com.example.studenttrackingapp.Preferences.StudentProgressPreferences;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,16 +23,16 @@ public class StudentViewTopicsActivity extends AppCompatActivity {
         studentName = getIntent().getStringExtra("student_name");
         bookTitle   = getIntent().getStringExtra("book_title");
 
-        TopicDAO            topicDAO = new TopicDAO(this);
-        TestDAO             testDAO  = new TestDAO(this);
-        StudentProgressDAO  progDAO  = new StudentProgressDAO(this);
+        TopicDAO topicDAO = new TopicDAO(this);
+        TestDAO testDAO  = new TestDAO(this);
+        StudentProgressPreferences progPreferences  = new StudentProgressPreferences(this);
 
         List<String> showRows = new ArrayList<>();
         for (String topic : topicDAO.getAllTopics(bookTitle)) {
             List<String> tests   = testDAO.getTestsByTopicName(topic);
             int done             = 0;
             for (String t : tests)
-                if (progDAO.isCompleted(studentName, topic + "::" + t)) done++;
+                if (progPreferences.isCompleted(studentName, topic + "::" + t)) done++;
 
             int percent = tests.isEmpty() ? 0 : Math.round(100f*done/tests.size());
             showRows.add("Topic: " + topic +

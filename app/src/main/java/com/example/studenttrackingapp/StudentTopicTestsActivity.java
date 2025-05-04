@@ -4,6 +4,10 @@ import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.studenttrackingapp.DAO.TestDAO;
+import com.example.studenttrackingapp.Preferences.StudentProgressPreferences;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +15,7 @@ public class StudentTopicTestsActivity extends AppCompatActivity {
 
     private String student, topic;
     private ArrayAdapter<String> adapter;
-    private StudentProgressDAO   progDAO;
+    private StudentProgressPreferences progDAO;
 
     @Override protected void onCreate(Bundle s) {
         super.onCreate(s);
@@ -20,8 +24,8 @@ public class StudentTopicTestsActivity extends AppCompatActivity {
         student = getIntent().getStringExtra("student_name");
         topic   = getIntent().getStringExtra("topic_name");
 
-        TestDAO  testDAO = new TestDAO(this);
-        progDAO          = new StudentProgressDAO(this);
+        TestDAO testDAO = new TestDAO(this);
+        progDAO          = new StudentProgressPreferences(this);
 
         List<String> rows = new ArrayList<>();
         for (String t : testDAO.getTestsByTopicName(topic)) {
