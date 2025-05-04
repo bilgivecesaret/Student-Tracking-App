@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Header showing total absences -->
+    <TextView
+        android:id="@+id/totalAbsencesView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:paddingBottom="16dp"
+        android:text="Total Absences: 0"/>
+
+    <!-- Button to add new absence date -->
+    <Button
+        android:id="@+id/addAbsenceButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Absence Date"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- List showing all absence dates -->
+    <ListView
+        android:id="@+id/absenceListView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+</LinearLayout>
