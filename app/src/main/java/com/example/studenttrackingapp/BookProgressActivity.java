@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Öğrenci – Öğretmeninin atadığı kitaplarda ne kadar test bitirdiğini görür.
+ * Öğrenci tarafından, Öğretmeninin atadığı kitaplarda ne kadar test bitirdiğini görür.
  * Sadece okunur; öğrenci işaretleme yapamaz.
  */
 public class BookProgressActivity extends AppCompatActivity {
@@ -35,7 +35,6 @@ public class BookProgressActivity extends AppCompatActivity {
 
         /* INTENT’ten öğrenci adı */
         student = getIntent().getStringExtra("student_name");
-        if (student == null) student = "Mustafa";   // varsayılan
 
         /* DAO’lar */
         assignmentPreferences = new AssignmentPreferences(this);
@@ -56,7 +55,7 @@ public class BookProgressActivity extends AppCompatActivity {
     private void loadProgress() {
         adapter.clear();
 
-        /* 1 – Bu öğrenciye atanmış kitaplar */
+        /* Bu öğrenciye atanmış kitaplar */
         List<String> myBooks = assignmentPreferences.getBooksForStudent(student);
         if (myBooks.isEmpty()) {
             adapter.add("You have no assigned books yet.");
@@ -67,11 +66,11 @@ public class BookProgressActivity extends AppCompatActivity {
             int totalTests = 0;
             int doneTests  = 0;
 
-            /* 2 – Kitabın konuları */
+            /* Kitabın konuları */
             List<String> topics = topicDAO.getAllTopics(book);
 
             for (String topic : topics) {
-                /* 3 – O konudaki testler */
+                /* konudaki testler */
                 List<String> tests = testDAO.getAllTests(topic);
                 totalTests += tests.size();
 
@@ -86,6 +85,7 @@ public class BookProgressActivity extends AppCompatActivity {
             adapter.add("Book: " + book +
                     "\nCompleted: " + doneTests + "/" + totalTests +
                     " (" + pct + ")");
+            adapter.notifyDataSetChanged();
         }
     }
 }
