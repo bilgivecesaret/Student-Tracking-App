@@ -3,6 +3,7 @@ package com.example.studenttrackingapp;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,6 +11,7 @@ import com.example.studenttrackingapp.DAO.TestDAO;
 import com.example.studenttrackingapp.DAO.TopicDAO;
 import com.example.studenttrackingapp.Preferences.AssignmentPreferences;
 import com.example.studenttrackingapp.Preferences.ProgressPreferences;
+import com.example.studenttrackingapp.Preferences.StudentProgressPreferences;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,72 +23,54 @@ import java.util.List;
 public class BookProgressActivity extends AppCompatActivity {
 
     private ArrayAdapter<String> adapter;
-
-    private String student;          // oturum açan öğrenci
+    private String studentName;
     private AssignmentPreferences assignmentPreferences;
     private TopicDAO topicDAO;
     private TestDAO testDAO;
-    private ProgressPreferences progressPreferences;
+    private ProgressPreferences bookProgressPreferences;
+    private StudentProgressPreferences topicProgressPreferences;
+    private ListView lv;
 
     @Override
     protected void onCreate(Bundle s) {
         super.onCreate(s);
         setContentView(R.layout.activity_book_progress);
 
-        /* INTENT’ten öğrenci adı */
-        student = getIntent().getStringExtra("student_name");
-
-        /* DAO’lar */
+        studentName = getIntent().getStringExtra("student_name");
         assignmentPreferences = new AssignmentPreferences(this);
-        topicDAO      = new TopicDAO(this);
-        testDAO       = new TestDAO(this);
-        progressPreferences = new ProgressPreferences(this);
+        List<String> myBooks = assignmentPreferences.getBooksForStudent(studentName);
+        if (myBooks.isEmpty())
+            Toast.makeText(this, "No assigned book yet.", Toast.LENGTH_SHORT).show();
+        topicDAO = new TopicDAO(this);
+        testDAO = new TestDAO(this);
+        topicProgressPreferences = new StudentProgressPreferences(this);
+        bookProgressPreferences = new ProgressPreferences(this);
 
-        /* ListView hazırlığı */
-        ListView lv = findViewById(R.id.bookProgressListView);
-        adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1, new ArrayList<>());
-        lv.setAdapter(adapter);
 
-        loadProgress();
-    }
-
-    /** Her atanan kitap için ilerleme yüzdesini hesapla ve listede göster */
-    private void loadProgress() {
-        adapter.clear();
-
-        /* Bu öğrenciye atanmış kitaplar */
-        List<String> myBooks = assignmentPreferences.getBooksForStudent(student);
-        if (myBooks.isEmpty()) {
-            adapter.add("You have no assigned books yet.");
-            return;
-        }
-
-        for (String book : myBooks) {
+        List<String> showRows = new ArrayList<>();
+        for (String bookTitle : myBooks) {
             int totalTests = 0;
-            int doneTests  = 0;
-
-            /* Kitabın konuları */
-            List<String> topics = topicDAO.getAllTopics(book);
-
-            for (String topic : topics) {
-                /* konudaki testler */
-                List<String> tests = testDAO.getAllTests(topic);
+            int doneTests = 0;
+            for (String topic : topicDAO.getAllTopics(bookTitle)) {
+                List<String> tests = testDAO.getTestsByTopicName(topic);
                 totalTests += tests.size();
-
-                for (String test : tests) {
-                    if (progressPreferences.isCompleted(student, topic, test)) doneTests++;
+                int counter = 0;
+                for (String t : tests) {
+                    if (topicProgressPreferences.isCompleted(studentName, topic + "::" + t)) {
+                        counter++;
+                        bookProgressPreferences.setCompleted(studentName, topic, t, true);
+                    }
                 }
+                doneTests += counter;
             }
-
-            String pct = totalTests == 0 ? "0%" :
-                    (doneTests * 100 / totalTests) + "%";
-
-            adapter.add("Book: " + book +
+            int percent = Math.round(100f * doneTests / totalTests);
+            showRows.add("Book: " + bookTitle +
                     "\nCompleted: " + doneTests + "/" + totalTests +
-                    " (" + pct + ")");
+                    " (" + percent + "%)");
         }
 
-        adapter.notifyDataSetChanged();
+        lv = findViewById(R.id.bookProgressListView);
+        lv.setAdapter(new ArrayAdapter<>(this,
+                android.R.layout.simple_list_item_1, showRows));
     }
 }
