@@ -28,8 +28,6 @@ public class BookDAO {
         return (int) id;
     }
 
-
-
     // Tüm kitapları getir
     public List<String> getAllBooks() {
         List<String> books = new ArrayList<>();
@@ -53,7 +51,6 @@ public class BookDAO {
     public int getBookId(String title) {
         int bookId = -1;
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-
         Cursor cursor = db.query(DatabaseHelper.TABLE_BOOKS,
                 new String[]{DatabaseHelper.COLUMN_BOOK_ID},
                 DatabaseHelper.COLUMN_BOOK_NAME + "=?",
@@ -63,12 +60,11 @@ public class BookDAO {
         if (cursor.moveToFirst()) {
             bookId = cursor.getInt(0);
         }
-
+        Log.d(TAG, "Kitap id: " + bookId);
         cursor.close();
         db.close();
         return bookId;
     }
-
 
 
     // Kitap sil (başlığa göre)
@@ -80,15 +76,6 @@ public class BookDAO {
                 new String[]{title});
         Log.d(TAG, "Kitap silindi: " + title);
         db.close();
-    }
-
-    public int addBookAndReturnId(String title) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(DatabaseHelper.COLUMN_BOOK_NAME, title);
-        long id = db.insert(DatabaseHelper.TABLE_BOOKS, null, values);
-        db.close();
-        return (int) id;
     }
 
     public boolean isBookExists(String title) {

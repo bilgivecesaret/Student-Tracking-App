@@ -26,4 +26,10 @@ public class AssignmentPreferences {
     public List<String> getBooksForStudent(String student) {
         return new ArrayList<>(prefs.getStringSet(student, new HashSet<>()));
     }
+
+    public void unassignBook(String student, String book) {
+        Set<String> set = new HashSet<>(getBooksForStudent(student));
+        set.remove(book);
+        prefs.edit().putStringSet(student, set).apply();
+    }
 }

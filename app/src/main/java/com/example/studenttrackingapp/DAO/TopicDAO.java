@@ -54,13 +54,12 @@ public class TopicDAO {
         return topics;
     }
 
-
     // Belirli bir kitaba konu ekle
     public int addTopic(int bookId, String topicName) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(DatabaseHelper.COLUMN_TOPIC_NAME, topicName);
         values.put(DatabaseHelper.COLUMN_TOPIC_BOOK_ID, bookId);  // Doğru sütun adı
+        values.put(DatabaseHelper.COLUMN_TOPIC_NAME, topicName);
         long id = db.insert(DatabaseHelper.TABLE_TOPICS, null, values);
         db.close();
         return (int) id;
@@ -93,8 +92,6 @@ public class TopicDAO {
         cursor.close();
         return topicList;
     }
-
-
 
     // Belirli bir kitaba ait konuları getir
     public List<String> getTopicsByBookId(int bookId) {
@@ -137,16 +134,6 @@ public class TopicDAO {
         cursor.close();
         db.close();
         return topicId;
-    }
-
-    public int addTopicAndReturnId(int bookId, String topicName) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(DatabaseHelper.COLUMN_TOPIC_BOOK_ID, bookId);
-        values.put(DatabaseHelper.COLUMN_TOPIC_NAME, topicName);
-        long id = db.insert(DatabaseHelper.TABLE_TOPICS, null, values);
-        db.close();
-        return (int) id;
     }
 
     public boolean isTopicExists(int bookId, String topicName) {

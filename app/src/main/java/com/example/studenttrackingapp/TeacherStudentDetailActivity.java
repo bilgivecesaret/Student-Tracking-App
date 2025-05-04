@@ -54,7 +54,10 @@ public class TeacherStudentDetailActivity extends AppCompatActivity {
                 android.R.layout.simple_list_item_1, assignedBooks);
         assignedList.setAdapter(adapter);
 
-        assignBookBtn.setOnClickListener(v -> showAssignDialog());
+        assignBookBtn.setOnClickListener(v -> {
+            showAssignDialog();
+            adapter.notifyDataSetChanged();
+        });
         assignedList.setOnItemClickListener((p, v, pos, id) -> {
             String bookTitle = adapter.getItem(pos);
             Intent in = new Intent(this, StudentBookTopicsActivity.class);
@@ -66,7 +69,10 @@ public class TeacherStudentDetailActivity extends AppCompatActivity {
         /* 2️⃣  Uzun basınca dersi sil */
         assignedList.setOnItemLongClickListener((p, v12, pos, id) -> {
             String toDelete = adapter.getItem(pos);
-            if (toDelete != null) showDeleteDialog(toDelete);
+            if (toDelete != null){
+                showDeleteDialog(toDelete);
+                adapter.notifyDataSetChanged();
+            }
             return true;
         });
 
@@ -94,7 +100,6 @@ public class TeacherStudentDetailActivity extends AppCompatActivity {
                     if (!assignedBooks.contains(chosen)) {
                         assignmentPreferences.assignBook(studentName, chosen);
                         assignedBooks.add(chosen);
-                        adapter.notifyDataSetChanged();
                     }
                 })
                 .setNegativeButton("Cancel", null)
@@ -107,8 +112,7 @@ public class TeacherStudentDetailActivity extends AppCompatActivity {
                 .setTitle("Delete Student")
                 .setMessage("Delete \"" + book + "\"?")
                 .setPositiveButton("Delete", (d, w) -> {
-                    bookDAO.deleteBook(book);
-                    adapter.notifyDataSetChanged();
+                    assignmentPreferences.unassignBook(studentName,book);
                 })
                 .setNegativeButton("Cancel", null)
                 .show();

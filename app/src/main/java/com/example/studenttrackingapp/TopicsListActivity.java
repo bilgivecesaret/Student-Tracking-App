@@ -2,6 +2,7 @@ package com.example.studenttrackingapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.*;
 
 import androidx.appcompat.app.AlertDialog;
@@ -64,7 +65,30 @@ public class TopicsListActivity extends AppCompatActivity {
     }
 
     private void showAddTopicDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Add New Topic");
 
+        final EditText input = new EditText(this);
+        input.setHint("Topic title");
+        builder.setView(input);
+
+        builder.setPositiveButton("Add", (dialog, which) -> {
+            title = input.getText().toString().trim();
+            if (!title.isEmpty()) {
+                int bookId = getIntent().getIntExtra("bookId", -1);
+                if (bookId == -1) {
+                    Log.e(TAG, "bookId is missing!");
+                    return;
+                }
+                Log.d(TAG, "bookId: " + bookId);
+                topicDAO.addTopic(bookId, title);
+                Toast.makeText(this, "Topic added", Toast.LENGTH_SHORT).show();
+                refreshTopicList();
+            }
+        });
+
+        builder.setNegativeButton("Cancel", null);
+        builder.show();
     }
 
     private void showDeleteDialog(String topicTitle) {
