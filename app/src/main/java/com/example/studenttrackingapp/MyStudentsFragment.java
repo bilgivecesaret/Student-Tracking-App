@@ -62,7 +62,7 @@ public class MyStudentsFragment extends Fragment {
         listView.setOnItemClickListener((parent, v1, pos, id) -> {
             String selectedStudent = adapter.getItem(pos);
             if (selectedStudent != null) {
-                Intent intent = new Intent(requireContext(), TeacherStudentDetailActivity.class);
+                Intent intent = new Intent(requireContext(), StudentDetailActivity.class);
                 intent.putExtra("student_name", selectedStudent);   // öğretmen görünümü
                 startActivity(intent);
             }

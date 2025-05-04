@@ -21,7 +21,7 @@ public class StudentDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_student_detail);
 
         listView = findViewById(R.id.listViewStudentDetails);
-        studentName = getIntent().getStringExtra("studentName");
+        studentName = getIntent().getStringExtra("student_name");
 
         adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, options);
@@ -49,20 +49,19 @@ public class StudentDetailActivity extends AppCompatActivity {
     private void startScheduleActivity(String type) {
         Intent intent = new Intent(this, ScheduleListActivity.class);
         intent.putExtra("scheduleType", type);
-        intent.putExtra("studentName", studentName);
+        intent.putExtra("student_name", studentName);
         startActivity(intent);
     }
 
     private void startStudentBooksActivity() {
-        Intent intent = new Intent(this, BookListActivity.class);
-        intent.putExtra("owner", "student");
-        intent.putExtra("studentName", studentName);
+        Intent intent = new Intent(this, TeacherStudentDetailActivity.class);
+        intent.putExtra("student_name", studentName);
         startActivity(intent);
     }
 
     private void startAbsenceActivity() {
         Intent intent = new Intent(this, AbsenceActivity.class);
-        intent.putExtra("studentName", studentName);
+        intent.putExtra("student_name", studentName);
         startActivity(intent);
     }
 }
