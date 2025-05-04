@@ -2,6 +2,8 @@ package com.example.studenttrackingapp;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,6 +29,7 @@ public class TestActivity extends AppCompatActivity {
     private List<String> topics;
     private ArrayAdapter<String> adapter;
     private static final String TAG = "TestActivity";
+    private GestureDetector gestureDetector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +53,35 @@ public class TestActivity extends AppCompatActivity {
             }
             return true;
         });
+
+        gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
+            private static final int SWIPE_THRESHOLD = 100;
+            private static final int SWIPE_VELOCITY_THRESHOLD = 100;
+
+            @Override
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                float diffY = e2.getY() - e1.getY();
+                float diffX = e2.getX() - e1.getX();
+
+                // Yalnızca yukarı veya aşağı kaydırma (dikey swipe)
+                if (Math.abs(diffY) > Math.abs(diffX)) {
+                    if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
+                        int position = listView.pointToPosition((int) e1.getX(), (int) e1.getY());
+                        if (position != ListView.INVALID_POSITION) {
+                            testToDelete = adapter.getItem(position);
+                            if (testToDelete != null) {
+                                showDeleteDialog(testToDelete);
+                            }
+                        }
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+
+        // ListView'e dokunma olayını dinle
+        listView.setOnTouchListener((v, event) -> gestureDetector.onTouchEvent(event));
     }
 
     private void refreshTopicList() {

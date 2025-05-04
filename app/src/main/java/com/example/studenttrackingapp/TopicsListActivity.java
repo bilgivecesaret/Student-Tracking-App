@@ -3,10 +3,13 @@ package com.example.studenttrackingapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.widget.*;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GestureDetectorCompat;
 
 import com.example.studenttrackingapp.DAO.TopicDAO;
 
@@ -21,6 +24,7 @@ public class TopicsListActivity extends AppCompatActivity {
     private String selectedTopic, topicToDelete, title;
     private List<String> topics;
     private static final String TAG = "TopicsListActivity";
+    private GestureDetectorCompat gestureDetector;
 
 
     @Override
@@ -55,6 +59,11 @@ public class TopicsListActivity extends AppCompatActivity {
             }
             return true;
         });
+
+        // Gesture detector
+        gestureDetector = new GestureDetectorCompat(this, new GestureListener());
+
+        listView.setOnTouchListener((v, event) -> gestureDetector.onTouchEvent(event));
     }
 
     private void refreshTopicList() {
@@ -102,5 +111,31 @@ public class TopicsListActivity extends AppCompatActivity {
                 })
                 .setNegativeButton("Cancel", null)
                 .show();
+    }
+
+
+    private class GestureListener extends GestureDetector.SimpleOnGestureListener {
+        private static final int SWIPE_THRESHOLD = 100;
+        private static final int SWIPE_VELOCITY_THRESHOLD = 100;
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            float diffY = e2.getY() - e1.getY();
+            float diffX = e2.getX() - e1.getX();
+
+            if (Math.abs(diffY) > Math.abs(diffX)) {
+                if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
+                    int position = listView.pointToPosition((int) e1.getX(), (int) e1.getY());
+                    if (position != AdapterView.INVALID_POSITION) {
+                        String topicToDelete = adapter.getItem(position);
+                        if (topicToDelete != null) {
+                            showDeleteDialog(topicToDelete);
+                        }
+                    }
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }

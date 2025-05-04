@@ -8,6 +8,7 @@ import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.view.GestureDetectorCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.studenttrackingapp.DAO.BookDAO;
@@ -22,6 +23,7 @@ public class MyBooksFragment extends Fragment {
     private Button addBookButton;
     private String selectedBook, bookToDelete, title;
     private List<String> books;
+    private GestureDetectorCompat gestureDetector;
 
 
     @Override
@@ -61,6 +63,11 @@ public class MyBooksFragment extends Fragment {
             }
             return true;
         });
+
+        // Gesture detector
+        gestureDetector = new GestureDetectorCompat(requireContext(), new GestureListener());
+
+        listView.setOnTouchListener((v, event) -> gestureDetector.onTouchEvent(event));
     }
 
     private void refreshBookList() {
@@ -101,8 +108,28 @@ public class MyBooksFragment extends Fragment {
                 .show();
     }
 
-    private void getBookId() {
-        bookDAO = new BookDAO(requireContext());
+    private class GestureListener extends GestureDetector.SimpleOnGestureListener {
+        private static final int SWIPE_THRESHOLD = 100;
+        private static final int SWIPE_VELOCITY_THRESHOLD = 100;
 
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            float diffY = e2.getY() - e1.getY();
+            float diffX = e2.getX() - e1.getX();
+
+            if (Math.abs(diffY) > Math.abs(diffX)) {
+                if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
+                    int position = listView.pointToPosition((int) e1.getX(), (int) e1.getY());
+                    if (position != AdapterView.INVALID_POSITION) {
+                        String bookToDelete = adapter.getItem(position);
+                        if (bookToDelete != null) {
+                            showDeleteDialog(bookToDelete);
+                        }
+                    }
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }
