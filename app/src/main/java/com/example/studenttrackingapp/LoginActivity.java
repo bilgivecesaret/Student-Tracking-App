@@ -8,6 +8,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 
 import com.example.studenttrackingapp.DAO.StudentDAO;
 import com.example.studenttrackingapp.Preferences.UserPreferences;
@@ -22,6 +25,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        syncBooksData();
 
         usernameEditText = findViewById(R.id.usernameEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
@@ -56,5 +60,14 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void syncBooksData() {
+        // We start the Worker to synchronize the book data.
+        WorkRequest syncRequest = new OneTimeWorkRequest.Builder(BookSyncWorker.class)
+                .build();
+
+        // We start the job request with WorkManager.
+        WorkManager.getInstance(this).enqueue(syncRequest);
     }
 }

@@ -2,8 +2,8 @@ package com.example.studenttrackingapp;
 
 import android.os.Bundle;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AppCompatActivity;
+import com.example.studenttrackingapp.Preferences.AbsencePreferences;
 
 public class AttendanceActivity extends AppCompatActivity {
 
@@ -12,17 +12,22 @@ public class AttendanceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attendance);
 
+        String studentName = getIntent().getStringExtra("student_name");
+        AbsencePreferences absencePreferences = new AbsencePreferences(this);
         TextView attendanceView = findViewById(R.id.attendanceStats);
 
-        int totalDays = 100;
-        int attendedDays = 85;
-        int absences = totalDays - attendedDays;
-        int percentage = (attendedDays * 100) / totalDays;
+        // Get attendance data from preferences
+        int attendedDays = absencePreferences.getTotalAttends(studentName);
+        int absences = absencePreferences.getTotalAbsences(studentName);
+        int totalDays = attendedDays + absences;
+        int percentage = totalDays > 0 ? (attendedDays * 100) / totalDays : 0;
 
-        attendanceView.setText("Toplam Gün: " + totalDays +
-                "\nKatılım: " + attendedDays +
-                "\nDevamsızlık: " + absences +
-                "\nKatılım Yüzdesi: %" + percentage);
+        // Update the view with dynamic data
+        attendanceView.setText(
+                "Toplam Gün: " + totalDays + "\n" +
+                        "Katılım: " + attendedDays + "\n" +
+                        "Devamsızlık: " + absences + "\n" +
+                        "Katılım Yüzdesi: %" + percentage
+        );
     }
 }
-

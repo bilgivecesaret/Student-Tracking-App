@@ -24,40 +24,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".StudentHomeActivity" />
         <activity android:name=".BookProgressActivity" />
         <activity android:name=".AttendanceActivity" />
         <activity android:name=".ProgressChartActivity" />
-        <activity android:name=".WeeklyScheduleActivity" />
+        <activity android:name=".ScheduleActivity" />
         <activity android:name=".TopicsListActivity" />
-        <activity android:name=".TeacherStudentDetailActivity"
-            android:exported="false"/>
+        <activity android:name=".TeacherStudentDetailActivity" />
         <activity android:name=".StudentBookTopicsActivity" />
-        <activity
-            android:name=".StudentTopicTestsActivity"
-            android:exported="false"/>
+        <activity android:name=".StudentTopicTestsActivity" />
         <activity android:name=".StudentAssignedBooksActivity"/>
         <activity android:name=".StudentViewTopicsActivity"/>
-
-
-
-
-
-
-
-
         <activity android:name=".TeacherActivity" />
         <activity android:name=".StudentDetailActivity" />
-        <activity android:name=".ScheduleListActivity" />
         <activity android:name=".AbsenceActivity" />
         <activity android:name=".TestActivity" />
-
-
-        <activity android:name=".CalendarActivity" />
-        <activity android:name=".SubjectsListActivity" />
-
 
     </application>
 

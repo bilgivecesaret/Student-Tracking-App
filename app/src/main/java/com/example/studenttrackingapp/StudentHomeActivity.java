@@ -15,7 +15,7 @@ public class StudentHomeActivity extends AppCompatActivity {
             chartBtn, scheduleBtn, booksBtn;
 
     /* Veriler */
-    private String studentName;   // DB anahtarı olarak da kullanılacak
+    private String studentName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +45,11 @@ public class StudentHomeActivity extends AppCompatActivity {
         });
 
         // 2) Devam/İstatistik örnek butonları
-        attendanceBtn.setOnClickListener(
-                v -> startActivity(new Intent(this, AttendanceActivity.class)));
+        attendanceBtn.setOnClickListener(v -> {
+            Intent in = new Intent(this, AttendanceActivity.class);
+            in.putExtra("student_name", studentName);
+            startActivity(in);
+        });
 
         chartBtn.setOnClickListener(v -> {
             Intent in = new Intent(this, ProgressChartActivity.class);
@@ -56,7 +59,7 @@ public class StudentHomeActivity extends AppCompatActivity {
 
         // 3) Kişisel haftalık program
         scheduleBtn.setOnClickListener(v -> {
-            Intent in = new Intent(this, WeeklyScheduleActivity.class);
+            Intent in = new Intent(this, ScheduleActivity.class);
             in.putExtra("student_name", studentName);
             startActivity(in);
         });

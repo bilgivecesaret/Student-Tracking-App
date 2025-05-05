@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class StudentDetailActivity extends AppCompatActivity {
 
     private ListView listView;
-    private String[] options = {"Yearly Schedule", "Weekly Schedule", "Books", "Absence"};
+    private String[] options = {"Schedule", "Books", "Absence"};
     private String studentName;
     private ArrayAdapter<String> adapter;
 
@@ -31,24 +31,20 @@ public class StudentDetailActivity extends AppCompatActivity {
         listView.setOnItemClickListener((parent, view, position, id) -> {
             switch (position) {
                 case 0:
-                    startScheduleActivity("Yearly");
+                    startScheduleActivity();
                     break;
                 case 1:
-                    startScheduleActivity("Weekly");
-                    break;
-                case 2:
                     startStudentBooksActivity();
                     break;
-                case 3:
+                case 2:
                     startAbsenceActivity();
                     break;
             }
         });
     }
 
-    private void startScheduleActivity(String type) {
-        Intent intent = new Intent(this, ScheduleListActivity.class);
-        intent.putExtra("scheduleType", type);
+    private void startScheduleActivity() {
+        Intent intent = new Intent(this, ScheduleActivity.class);
         intent.putExtra("student_name", studentName);
         startActivity(intent);
     }

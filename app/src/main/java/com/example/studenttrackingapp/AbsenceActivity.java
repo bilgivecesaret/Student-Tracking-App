@@ -1,5 +1,6 @@
 package com.example.studenttrackingapp;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
@@ -8,16 +9,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.studenttrackingapp.Preferences.AbsencePreferences;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 public class AbsenceActivity extends AppCompatActivity {
-
     private ListView absenceListView;
     private TextView totalAbsencesView;
-    private Button addAbsenceButton;
+    private Button addRecordButton;
     private String studentName;
     private AbsencePreferences absencePreferences;
 
@@ -26,45 +25,64 @@ public class AbsenceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_absence);
 
-        // Initialize views
-        absenceListView = findViewById(R.id.absenceListView);
-        totalAbsencesView = findViewById(R.id.totalAbsencesView);
-        addAbsenceButton = findViewById(R.id.addAbsenceButton);
-
-        // Get student name from intent
         studentName = getIntent().getStringExtra("student_name");
         absencePreferences = new AbsencePreferences(this);
 
-        // Load and display absences
+        absenceListView = findViewById(R.id.absenceListView);
+        totalAbsencesView = findViewById(R.id.totalAbsencesView);
+        addRecordButton = findViewById(R.id.addRecordButton);
+
         refreshAbsenceList();
 
-        // Set up date picker button
-        addAbsenceButton.setOnClickListener(v -> showDatePicker());
+        addRecordButton.setOnClickListener(v -> showDatePicker());
     }
 
     private void refreshAbsenceList() {
-        // Get absences and update UI
-        int total = absencePreferences.getTotalAbsences(studentName);
-        totalAbsencesView.setText("Total Absences: " + total);
+        int totalAbsences = absencePreferences.getTotalAbsences(studentName);
+        int totalAttends = absencePreferences.getTotalAttends(studentName);
 
-        // Create adapter with explicit type arguments
-        List<String> absencesList = new ArrayList<>(absencePreferences.getAbsences(studentName));
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, absencesList);
+        totalAbsencesView.setText(String.format(
+                "Total Absences: %d\nTotal Attends: %d",
+                totalAbsences, totalAttends
+        ));
+
+        List<String> absenceList = new ArrayList<>(absencePreferences.getAbsences(studentName));
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_list_item_1,
+                absenceList
+        );
         absenceListView.setAdapter(adapter);
     }
 
     private void showDatePicker() {
         Calendar calendar = Calendar.getInstance();
-        new DatePickerDialog(
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
                 this,
                 (view, year, month, day) -> {
-                    String date = String.format("%04d-%02d-%02d", year, month + 1, day);
-                    absencePreferences.addAbsence(studentName, date);
-                    refreshAbsenceList();
+                    String date = String.format("%02d-%02d-%04d", day, month + 1, year);
+                    showAttendanceDialog(date);
                 },
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH)
-        ).show();
+        );
+        datePickerDialog.getDatePicker().setFirstDayOfWeek(Calendar.MONDAY);
+        datePickerDialog.show();
+    }
+
+    private void showAttendanceDialog(String date) {
+        new AlertDialog.Builder(this)
+                .setTitle("Attendance Status")
+                .setMessage("Was the student present or absent on " + date + "?")
+                .setPositiveButton("Attend", (dialog, which) -> {
+                    absencePreferences.addAttend(studentName, date);
+                    refreshAbsenceList();
+                })
+                .setNegativeButton("Absence", (dialog, which) -> {
+                    absencePreferences.addAbsence(studentName, date);
+                    refreshAbsenceList();
+                })
+                .show();
     }
 }

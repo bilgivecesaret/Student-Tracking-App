@@ -6,7 +6,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class AbsencePreferences {
-    private static final String PREFS_NAME = "StudentAbsences";
+    private static final String PREFS_NAME = "StudentAttendance";
+    private static final String KEY_ABSENCES = "absences_";
+    private static final String KEY_ATTENDS = "attends_";
     private final SharedPreferences sharedPreferences;
 
     public AbsencePreferences(Context context) {
@@ -17,15 +19,31 @@ public class AbsencePreferences {
         Set<String> absences = getAbsences(studentName);
         absences.add(date);
         sharedPreferences.edit()
-                .putStringSet(studentName, absences)
+                .putStringSet(KEY_ABSENCES + studentName, absences)
+                .apply();
+    }
+
+    public void addAttend(String studentName, String date) {
+        Set<String> attends = getAttends(studentName);
+        attends.add(date);
+        sharedPreferences.edit()
+                .putStringSet(KEY_ATTENDS + studentName, attends)
                 .apply();
     }
 
     public Set<String> getAbsences(String studentName) {
-        return sharedPreferences.getStringSet(studentName, new HashSet<>());
+        return sharedPreferences.getStringSet(KEY_ABSENCES + studentName, new HashSet<>());
+    }
+
+    public Set<String> getAttends(String studentName) {
+        return sharedPreferences.getStringSet(KEY_ATTENDS + studentName, new HashSet<>());
     }
 
     public int getTotalAbsences(String studentName) {
         return getAbsences(studentName).size();
+    }
+
+    public int getTotalAttends(String studentName) {
+        return getAttends(studentName).size();
     }
 }

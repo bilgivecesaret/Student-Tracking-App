@@ -16,22 +16,16 @@
     <string name="saveScheduleButton">Save Schedule</string>
     <string name="addTopicButton">Add New Topic</string>
     <string name="addTestButton">Add New Test</string>
-
-
-
-
-
-    <string name="bookProgressButton">📘 Kitap İlerlemesi</string>
-    <string name="attendanceButton">🗓️ Yoklama Durumu</string>
-    <string name="chartButton">📊 Grafiksel Gösterim</string>
-    <string name="myScheduleButton">🗓️ Haftalık Program</string>
-    <string name="myBooksButton">📚 Kitaplarım</string>
+    <string name="mySchedule">My Schedule</string>
+    <string name="bookProgressButton">📘 Book Progress</string>
+    <string name="attendanceButton">🗓️ Attendance Status</string>
+    <string name="chartButton">📊 Process Chart</string>
+    <string name="myScheduleButton">🗓️ Schedule</string>
+    <string name="myBooksButton">📚 My Books</string>
     <string name="bookProgressTextView">Book Progress</string>
     <string name="attendanceTextView">Attendance</string>
     <string name="chartTextView">Chart</string>
     <string name="myScheduleTextView">My Schedule</string>
     <string name="myBooksTextView">My Books</string>
-
-
 
 </resources>

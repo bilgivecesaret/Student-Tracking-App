@@ -5,7 +5,6 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <!-- Header showing total absences -->
     <TextView
         android:id="@+id/totalAbsencesView"
         android:layout_width="match_parent"
@@ -13,17 +12,22 @@
         android:textSize="18sp"
         android:textStyle="bold"
         android:paddingBottom="16dp"
-        android:text="Total Absences: 0"/>
+        android:text="Total Absences: 0\nTotal Attends: 0"/>
 
-    <!-- Button to add new absence date -->
     <Button
-        android:id="@+id/addAbsenceButton"
+        android:id="@+id/addRecordButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add Absence Date"
+        android:text="Add Attendance Record"
         android:layout_marginBottom="16dp"/>
 
-    <!-- List showing all absence dates -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Absence Dates:"
+        android:textStyle="bold"
+        android:paddingBottom="8dp"/>
+
     <ListView
         android:id="@+id/absenceListView"
         android:layout_width="match_parent"
