@@ -1,3 +1,4 @@
+/*  Created by Ugur OZKAN(21050161003) && Bahri KESKIN(22050161001) */
 package com.example.studenttrackingapp.DAO;
 
 import android.content.Context;
@@ -9,29 +10,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "student_tracking.db";
     public static final int DATABASE_VERSION = 1;
 
-    // Tablo adları
+    // Table names
     public static final String TABLE_STUDENTS = "students";
     public static final String TABLE_BOOKS = "books";
     public static final String TABLE_TOPICS = "topics";
     public static final String TABLE_TESTS = "tests";
 
-    // Student sütunları
+    // Student columns
     public static final String COLUMN_STUDENT_ID = "id";
     public static final String COLUMN_STUDENT_NAME = "name";
     public static final String COLUMN_STUDENT_USERNAME = "username";
     public static final String COLUMN_STUDENT_PASSWORD = "password";
 
 
-    // Book sütunları
+    // Book columns
     public static final String COLUMN_BOOK_ID = "id";
     public static final String COLUMN_BOOK_NAME = "name";
 
-    // Topic sütunları
+    // Topic columns
     public static final String COLUMN_TOPIC_ID = "id";
     public static final String COLUMN_TOPIC_BOOK_ID = "book_id";
     public static final String COLUMN_TOPIC_NAME = "name";
 
-    // Test sütunları
+    // Test columns
     public static final String COLUMN_TEST_ID = "id";
     public static final String COLUMN_TEST_TOPIC_ID = "topic_id";
     public static final String COLUMN_TEST_NAME = "name";

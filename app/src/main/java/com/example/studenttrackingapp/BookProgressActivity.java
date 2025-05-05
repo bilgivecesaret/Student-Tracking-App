@@ -1,3 +1,4 @@
+/*  Created by Ugur OZKAN(21050161003) && Bahri KESKIN(22050161001) */
 package com.example.studenttrackingapp;
 
 import android.os.Bundle;
@@ -17,12 +18,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Öğrenci tarafından, Öğretmeninin atadığı kitaplarda ne kadar test bitirdiğini görür.
- * Sadece okunur; öğrenci işaretleme yapamaz.
+ * The student sees how many tests he has completed
+ * from the books assigned by his teacher.
+ * Only read; the student cannot mark.
  */
 public class BookProgressActivity extends AppCompatActivity {
 
-    private ArrayAdapter<String> adapter;
     private String studentName;
     private AssignmentPreferences assignmentPreferences;
     private TopicDAO topicDAO;

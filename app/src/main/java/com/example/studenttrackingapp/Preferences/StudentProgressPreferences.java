@@ -1,3 +1,4 @@
+/*  Created by Ugur OZKAN(21050161003) && Bahri KESKIN(22050161001) */
 package com.example.studenttrackingapp.Preferences;
 
 import android.content.Context;
@@ -6,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-/** 🟢  Sadece öğrencinin test bitirme bilgilerini tutar */
+/** 🟢  Only keeps the student's test completion information */
 public class StudentProgressPreferences {
 
     private static final String PREF = "student_completed_tests";
@@ -16,24 +17,24 @@ public class StudentProgressPreferences {
         prefs = ctx.getSharedPreferences(PREF, Context.MODE_PRIVATE);
     }
 
-    /** "öğrenci_adı::test_adı" anahtarı kullanıyoruz */
+    /** We use the key "student_name::test_name" */
     private String key(String student, String test) {
         return student + "::" + test;
     }
 
     /* ----------  API  ---------- */
 
-    /** Test işaretli mi? */
+    /** Is the test marked? */
     public boolean isCompleted(String student, String test) {
         return prefs.getBoolean(key(student, test), false);
     }
 
-    /** Testi işaretle / kaldır */
+    /** Mark/unmark test */
     public void setCompleted(String student, String test, boolean done) {
         prefs.edit().putBoolean(key(student, test), done).apply();
     }
 
-    /** Öğrencinin tamamladığı tüm test adları  */
+    /** all test names completed by the student  */
     public List<String> getAllCompleted(String student) {
         Set<String> allKeys = prefs.getAll().keySet();
         List<String> result = new ArrayList<>();

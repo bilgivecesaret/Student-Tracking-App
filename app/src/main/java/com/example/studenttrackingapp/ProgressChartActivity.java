@@ -38,7 +38,7 @@ public class ProgressChartActivity extends AppCompatActivity {
         int done = 0;
         int toDo = 0;
 
-        // Öğrenciye özel ilerlemeyi al
+        // Get student specific progress
         for (String bookTitle : bookTitles) {
             for (String topic : topicDAO.getAllTopics(bookTitle)) {
                 List<String> tests = testDAO.getTestsByTopicName(topic);
@@ -53,7 +53,7 @@ public class ProgressChartActivity extends AppCompatActivity {
         int total = done + toDo;
         int percentDone = total == 0 ? 0 : Math.round(100f*done/total);
         int percentToDo = total == 0 ? 0 : Math.round(100f*toDo/total);
-        // Pie chart verisi
+        // Pie chart data
         ArrayList<PieEntry> entries = new ArrayList<>();
         if (done > 0) entries.add(new PieEntry(percentDone, "Done"));
         if (toDo > 0) entries.add(new PieEntry(percentToDo, "To Do"));
@@ -68,6 +68,6 @@ public class ProgressChartActivity extends AppCompatActivity {
         pieChart.getDescription().setEnabled(false);
         pieChart.setCenterText("Overall Progress");
         pieChart.setCenterTextSize(18f);
-        pieChart.invalidate();  // Grafiği yenile
+        pieChart.invalidate();  // Refresh chart
     }
 }

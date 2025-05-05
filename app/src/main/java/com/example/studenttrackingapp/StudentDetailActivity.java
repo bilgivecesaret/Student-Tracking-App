@@ -1,9 +1,8 @@
+/*  Created by Ugur OZKAN(21050161003) && Bahri KESKIN(22050161001) */
 package com.example.studenttrackingapp;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import androidx.appcompat.app.AppCompatActivity;
@@ -50,7 +49,7 @@ public class StudentDetailActivity extends AppCompatActivity {
     }
 
     private void startStudentBooksActivity() {
-        Intent intent = new Intent(this, TeacherStudentDetailActivity.class);
+        Intent intent = new Intent(this, AssignBookToStudentActivity.class);
         intent.putExtra("student_name", studentName);
         startActivity(intent);
     }

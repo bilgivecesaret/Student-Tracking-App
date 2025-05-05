@@ -8,7 +8,7 @@
     android:background="#FFFFFF">
 
     <TextView
-        android:id="@+id/weeklyScheduleTitle"
+        android:id="@+id/scheduleTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/mySchedule"
@@ -17,7 +17,7 @@
         android:layout_gravity="center_horizontal"/>
 
     <ListView
-        android:id="@+id/weeklyScheduleListView"
+        android:id="@+id/scheduleListView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -29,7 +29,7 @@
         android:id="@+id/addNewScheduleButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add New Schedule"
+        android:text="@string/addScheduleButton"
         android:backgroundTint="@color/purple_500"
         android:textColor="@android:color/white"
         android:layout_marginTop="8dp"/>

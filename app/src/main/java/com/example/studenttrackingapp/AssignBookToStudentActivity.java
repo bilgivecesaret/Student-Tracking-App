@@ -1,3 +1,4 @@
+/*  Created by Ugur OZKAN(21050161003) && Bahri KESKIN(22050161001) */
 package com.example.studenttrackingapp;
 
 import android.content.Intent;
@@ -12,14 +13,13 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.studenttrackingapp.DAO.BookDAO;
-import com.example.studenttrackingapp.DAO.TopicDAO;
 import com.example.studenttrackingapp.Preferences.AssignmentPreferences;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class TeacherStudentDetailActivity extends AppCompatActivity {
+public class AssignBookToStudentActivity extends AppCompatActivity {
 
     private TextView studentNameTxt;
     private Button   assignBookBtn;
@@ -36,7 +36,7 @@ public class TeacherStudentDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_teacher_student_detail);
+        setContentView(R.layout.activity_assign_book_to_student);
 
         studentNameTxt = findViewById(R.id.studentTitle);
         assignBookBtn  = findViewById(R.id.assignBookBtn);
@@ -48,7 +48,7 @@ public class TeacherStudentDetailActivity extends AppCompatActivity {
         bookDAO      = new BookDAO(this);
         assignmentPreferences = new AssignmentPreferences(this);
 
-        // Öğrenciye önceki atanan kitapları getir
+        // Bring the student the previous assigned books
         assignedBooks.addAll(assignmentPreferences.getBooksForStudent(studentName));
 
         adapter = new ArrayAdapter<>(this,
@@ -68,7 +68,7 @@ public class TeacherStudentDetailActivity extends AppCompatActivity {
             startActivity(in);
         });
 
-        /* 2️⃣  Uzun basınca dersi sil */
+        /* 2️⃣  Long press to delete the lesson */
         assignedList.setOnItemLongClickListener((p, v12, pos, id) -> {
             String toDelete = adapter.getItem(pos);
             if (toDelete != null){
@@ -84,9 +84,9 @@ public class TeacherStudentDetailActivity extends AppCompatActivity {
         adapter.addAll(assignedBooks);
     }
 
-    /** Öğretmenin kitap listesinden seçim penceresi */
+    /** Selection window from the teacher's book list */
     private void showAssignDialog() {
-        /* Öğretmenin SQLite’daki tüm kitaplarını çek */
+        /* Retrieve all books from the teacher's database */
         List<String> teacherBooks = bookDAO.getAllBooks()
                 .stream()
                 .map(String::toString)  // zaten String ise gerek yok
@@ -113,7 +113,7 @@ public class TeacherStudentDetailActivity extends AppCompatActivity {
                 .show();
     }
 
-    /** Silme onayı */
+    /** Confirmation of deletion */
     private void showDeleteDialog(String book) {
         new AlertDialog.Builder(this)
                 .setTitle("Delete Student")

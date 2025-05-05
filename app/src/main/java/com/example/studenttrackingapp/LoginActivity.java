@@ -1,3 +1,4 @@
+/*  Created by Ugur OZKAN(21050161003) && Bahri KESKIN(22050161001) */
 package com.example.studenttrackingapp;
 
 import android.content.Intent;
@@ -47,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
                 intent.putExtra("teacher_name", "Kemal");
                 startActivity(intent);
             } else if (studentDAO.validateStudentLogin(username, password)) {
-                // Giriş başarılıysa oturum bilgilerini kaydet
+                // If login is successful, save session information
                 UserPreferences.setUsername(LoginActivity.this, username);
                 UserPreferences.setLoggedIn(LoginActivity.this, true);
 

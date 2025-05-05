@@ -1,3 +1,4 @@
+/*  Created by Ugur OZKAN(21050161003) && Bahri KESKIN(22050161001) */
 package com.example.studenttrackingapp.Preferences;
 
 import android.content.Context;
@@ -17,7 +18,7 @@ public class ThemePreferences {
 
     public static String getTheme(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        return sharedPreferences.getString(KEY_THEME, "light");  // Varsayılan olarak "light" teması
+        return sharedPreferences.getString(KEY_THEME, "light");  // Default theme is "light"
     }
 }
 

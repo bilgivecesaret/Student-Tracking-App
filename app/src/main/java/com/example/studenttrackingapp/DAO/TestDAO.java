@@ -1,3 +1,4 @@
+/*  Created by Ugur OZKAN(21050161003) && Bahri KESKIN(22050161001) */
 package com.example.studenttrackingapp.DAO;
 
 import android.content.ContentValues;
@@ -19,7 +20,7 @@ public class TestDAO {
         dbHelper = new DatabaseHelper(context);
     }
 
-    // Belirli bir konuya test ekle
+    // Add a test to a specific topic
     public void addTest(int topicId, String testName) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -27,7 +28,7 @@ public class TestDAO {
         values.put(DatabaseHelper.COLUMN_TEST_NAME, testName);
         long id = db.insert(DatabaseHelper.TABLE_TESTS, null, values);
         db.close();
-        Log.d(TAG,  testName + " eklendi: " + " - Topic ID: " + id);
+        Log.d(TAG,  testName + " added: " + " - Topic ID: " + id);
     }
 
     public void deleteTest(String title) {
@@ -38,7 +39,7 @@ public class TestDAO {
         db.close();
     }
 
-    // Belirli bir konuya ait testleri getir
+    // Bring tests for a specific topic
     public List<String> getTestsByTopicId(int topicId) {
         List<String> tests = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -61,7 +62,7 @@ public class TestDAO {
         return tests;
     }
 
-    // Test adı ve konusuna göre test kontrolü
+    // Test control by test name and subject
     public boolean isTestExists(int topicId, String testName) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.query(DatabaseHelper.TABLE_TESTS,
@@ -74,7 +75,7 @@ public class TestDAO {
         return exists;
     }
 
-    // Konu adına göre testleri getir
+    // Get tests by topic name
     public List<String> getTestsByTopicName(String topicName) {
         List<String> testList = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -124,7 +125,7 @@ public class TestDAO {
             testCursor.close();
         } else {
             topicCursor.close();
-            Log.e(TAG, "Belirtilen topic bulunamadı: " + topicTitle);
+            Log.e(TAG, "The specified topic could not be found.: " + topicTitle);
         }
 
         db.close();

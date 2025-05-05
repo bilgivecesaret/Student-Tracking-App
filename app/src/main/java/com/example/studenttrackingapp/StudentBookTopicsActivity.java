@@ -1,3 +1,4 @@
+/*  Created by Ugur OZKAN(21050161003) && Bahri KESKIN(22050161001) */
 package com.example.studenttrackingapp;
 
 import android.content.Intent;
@@ -13,13 +14,13 @@ import com.example.studenttrackingapp.DAO.TopicDAO;
 import java.util.List;
 
 /**
- * Öğretmen:  Öğrencinin atanmış kitabına tıklayınca
- *            bu Activity açılır → konular listelenir.
+ * When the teacher clicks on the student's assigned book,
+ * this Activity opens → the topics are listed.
  */
 public class StudentBookTopicsActivity extends AppCompatActivity {
 
-    private String  studentName;   // seçilen öğrenci
-    private String  bookTitle;     // seçilen kitap
+    private String  studentName;   // selected student
+    private String  bookTitle;     // selected book
 
     private ArrayAdapter<String> adapter;
     private TopicDAO topicDAO;
@@ -29,16 +30,16 @@ public class StudentBookTopicsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_book_topics);
 
-        /* --- Intent verileri --- */
+        /* --- Intent data --- */
         studentName = getIntent().getStringExtra("student_name");
         bookTitle   = getIntent().getStringExtra("book_title");
 
-        /* --- DAO --- */
+        /* --- DAO (Data Access Object) --- */
         topicDAO = new TopicDAO(this);
 
-        /* --- Listeyi doldur --- */
+        /* --- Fill the list --- */
         ListView listView = findViewById(R.id.topicList);
-        List<String> topics = topicDAO.getAllTopics(bookTitle); // TopicDAO’daki metot
+        List<String> topics = topicDAO.getAllTopics(bookTitle); // Method in TopicDAO
 
         if (topics.isEmpty()) {
             Toast.makeText(this, "No topic found for \"" + bookTitle + "\"",
@@ -49,7 +50,7 @@ public class StudentBookTopicsActivity extends AppCompatActivity {
                 android.R.layout.simple_list_item_1, topics);
         listView.setAdapter(adapter);
 
-        /* --- Konuya tıklanınca test listesine geç --- */
+        /* --- Click on the topic to go to the test list --- */
         listView.setOnItemClickListener((parent, view, position, id) -> {
             String topicName = adapter.getItem(position);
             if (topicName != null) {

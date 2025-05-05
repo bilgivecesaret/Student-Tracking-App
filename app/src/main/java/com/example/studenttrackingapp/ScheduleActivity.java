@@ -1,7 +1,6 @@
 package com.example.studenttrackingapp;
 
 import android.app.DatePickerDialog;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +11,9 @@ import android.widget.ListView;
 import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.studenttrackingapp.Preferences.SchedulePreferences;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -22,33 +24,32 @@ import java.util.Locale;
 import java.util.Set;
 
 public class ScheduleActivity extends AppCompatActivity {
-
-    private static final String PREFS_NAME = "StudySchedules";
-    private static final String SCHEDULE_KEY = "study_items";
-
     private ListView listView;
     private ArrayAdapter<String> adapter;
     private List<String> schedules = new ArrayList<>();
-    private SharedPreferences sharedPreferences;
+    private SchedulePreferences schedulePreferences;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
     private Calendar calendar = Calendar.getInstance();
+    private String studentName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
 
+        studentName = getIntent().getStringExtra("student_name");
+
         // Initialize views
-        listView = findViewById(R.id.weeklyScheduleListView);
+        listView = findViewById(R.id.scheduleListView);
         Button addButton = findViewById(R.id.addNewScheduleButton);
-        sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        schedulePreferences = new SchedulePreferences(this);
 
         // Set up adapter
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, schedules);
         listView.setAdapter(adapter);
 
-        // Load saved schedules
-        loadSchedules();
+        //  Load saved schedules
+        loadSchedules(studentName);
 
         // Add new schedule
         addButton.setOnClickListener(v -> showAddScheduleDialog());
@@ -147,7 +148,7 @@ public class ScheduleActivity extends AppCompatActivity {
 
     private void addSchedule(String schedule) {
         schedules.add(schedule);
-        saveSchedules();
+        schedulePreferences.saveSchedule(studentName,schedules);
         adapter.notifyDataSetChanged();
         Toast.makeText(this, "Schedule added", Toast.LENGTH_SHORT).show();
     }
@@ -219,28 +220,22 @@ public class ScheduleActivity extends AppCompatActivity {
 
     private void updateSchedule(int position, String updatedSchedule) {
         schedules.set(position, updatedSchedule);
-        saveSchedules();
+        schedulePreferences.saveSchedule(studentName,schedules);
         adapter.notifyDataSetChanged();
         Toast.makeText(this, "Schedule updated", Toast.LENGTH_SHORT).show();
     }
 
     private void deleteSchedule(int position) {
         schedules.remove(position);
-        saveSchedules();
+        schedulePreferences.saveSchedule(studentName,schedules);
         adapter.notifyDataSetChanged();
         Toast.makeText(this, "Schedule deleted", Toast.LENGTH_SHORT).show();
     }
 
-    private void loadSchedules() {
-        Set<String> scheduleSet = sharedPreferences.getStringSet(SCHEDULE_KEY, new HashSet<>());
+    private void loadSchedules(String studentName) {
+        Set<String> scheduleSet = schedulePreferences.getSchedules(studentName);
         schedules.clear();
         schedules.addAll(scheduleSet);
         adapter.notifyDataSetChanged();
-    }
-
-    private void saveSchedules() {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putStringSet(SCHEDULE_KEY, new HashSet<>(schedules));
-        editor.apply();
     }
 }

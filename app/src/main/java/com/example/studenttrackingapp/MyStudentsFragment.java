@@ -1,3 +1,4 @@
+/*  Created by Ugur OZKAN(21050161003) && Bahri KESKIN(22050161001) */
 package com.example.studenttrackingapp;
 
 import android.content.Intent;
@@ -55,21 +56,21 @@ public class MyStudentsFragment extends Fragment {
 
         refreshStudentList();
 
-        /* Öğrenci ekleme diyaloğu */
+        /* Student add dialog */
         addStudentButton.setOnClickListener(v -> showAddStudentDialog());
 
-        /* 1️⃣  Öğrenci adına tıklanınca StudentDetailActivity açılır */
+        /* 1️⃣  Clicking on the student name opens the StudentDetailActivity */
         listView.setOnItemClickListener((parent, v1, pos, id) -> {
             String selectedStudent = adapter.getItem(pos);
             if (selectedStudent != null) {
                 Intent intent = new Intent(requireContext(), StudentDetailActivity.class);
-                intent.putExtra("student_name", selectedStudent);   // öğretmen görünümü
+                intent.putExtra("student_name", selectedStudent);   // teacher view
                 startActivity(intent);
             }
         });
 
 
-        /* 2️⃣  Uzun basınca öğrenciyi sil */
+        /* 2️⃣  Delete student by long press */
         listView.setOnItemLongClickListener((p, v12, pos, id) -> {
             String toDelete = adapter.getItem(pos);
             if (toDelete != null) showDeleteDialog(toDelete);
@@ -77,14 +78,14 @@ public class MyStudentsFragment extends Fragment {
         });
     }
 
-    /** Listeyi DAO’dan yenile */
+    /** Refresh list from DAO (Database Object) */
     private void refreshStudentList() {
         students.clear();
         students.addAll(studentDAO.getAllStudents());
         adapter.notifyDataSetChanged();
     }
 
-    /** Yeni öğrenci ekleme penceresi */
+    /** New student add window */
     private void showAddStudentDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext())
                 .setTitle("Add New Student");
@@ -125,7 +126,7 @@ public class MyStudentsFragment extends Fragment {
         builder.setNegativeButton("Cancel", null).show();
     }
 
-    /** Silme onayı */
+    /** Confirmation of deletion */
     private void showDeleteDialog(String username) {
         new AlertDialog.Builder(requireContext())
                 .setTitle("Delete Student")

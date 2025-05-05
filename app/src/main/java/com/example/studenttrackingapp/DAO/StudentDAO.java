@@ -1,3 +1,4 @@
+/*  Created by Ugur OZKAN(21050161003) && Bahri KESKIN(22050161001) */
 package com.example.studenttrackingapp.DAO;
 
 import android.content.ContentValues;
@@ -10,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StudentDAO {
-    private SQLiteDatabase db;
     private DatabaseHelper dbHelper;
     private static final String TAG = "StudentDAO";
 

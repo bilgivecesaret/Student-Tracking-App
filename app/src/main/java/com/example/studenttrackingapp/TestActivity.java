@@ -1,3 +1,4 @@
+/*  Created by Ugur OZKAN(21050161003) && Bahri KESKIN(22050161001) */
 package com.example.studenttrackingapp;
 
 import android.os.Bundle;
@@ -21,7 +22,6 @@ import java.util.List;
 
 public class TestActivity extends AppCompatActivity {
 
-    private List<String> testList = new ArrayList<>();
     private String title, testToDelete;
     private ListView listView;
     private TestDAO testDAO;
@@ -80,7 +80,7 @@ public class TestActivity extends AppCompatActivity {
             }
         });
 
-        // ListView'e dokunma olayını dinle
+        /* Listen for ListView touch event */
         listView.setOnTouchListener((v, event) -> gestureDetector.onTouchEvent(event));
     }
 

@@ -1,3 +1,4 @@
+/*  Created by Ugur OZKAN(21050161003) && Bahri KESKIN(22050161001) */
 package com.example.studenttrackingapp.DAO;
 
 import android.content.ContentValues;
@@ -19,7 +20,7 @@ public class BookDAO {
         dbHelper = new DatabaseHelper(context);
     }
 
-    // Kitap ekle
+    // Add a book
     public int addBook(String title) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -28,7 +29,7 @@ public class BookDAO {
         return (int) id;
     }
 
-    // Tüm kitapları getir
+    // Bring all the books
     public List<String> getAllBooks() {
         List<String> books = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -67,7 +68,7 @@ public class BookDAO {
     }
 
 
-    // Kitap sil (başlığa göre)
+    // Delete book (by title)
     public void deleteBook(String title) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 

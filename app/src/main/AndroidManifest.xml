@@ -31,7 +31,7 @@
         <activity android:name=".ProgressChartActivity" />
         <activity android:name=".ScheduleActivity" />
         <activity android:name=".TopicsListActivity" />
-        <activity android:name=".TeacherStudentDetailActivity" />
+        <activity android:name=".AssignBookToStudentActivity" />
         <activity android:name=".StudentBookTopicsActivity" />
         <activity android:name=".StudentTopicTestsActivity" />
         <activity android:name=".StudentAssignedBooksActivity"/>

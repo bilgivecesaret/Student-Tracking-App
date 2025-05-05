@@ -1,3 +1,4 @@
+/*  Created by Ugur OZKAN(21050161003) && Bahri KESKIN(22050161001) */
 package com.example.studenttrackingapp;
 
 import android.os.Bundle;
@@ -38,10 +39,10 @@ public class StudentTopicTestsActivity extends AppCompatActivity {
                 android.R.layout.simple_list_item_1, rows);
         lv.setAdapter(adapter);
 
-        /* test satırına dokununca done/undone */
+        /* done/undone when touching the test line */
         lv.setOnItemClickListener((p,v,pos,id)->{
             String line   = adapter.getItem(pos);
-            String test   = line.substring(2);     // satırdan test adını al
+            String test   = line.substring(2);     // get test name from line
             boolean done  = !studentProgressPreferences.isCompleted(student, topic + "::" + test);
             studentProgressPreferences.setCompleted(student, topic + "::" + test, done);
             adapter.remove(line);

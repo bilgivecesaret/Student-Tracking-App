@@ -1,3 +1,4 @@
+/*  Created by Ugur OZKAN(21050161003) && Bahri KESKIN(22050161001) */
 package com.example.studenttrackingapp;
 
 import android.os.Bundle;
@@ -24,10 +25,10 @@ public class AttendanceActivity extends AppCompatActivity {
 
         // Update the view with dynamic data
         attendanceView.setText(
-                "Toplam Gün: " + totalDays + "\n" +
-                        "Katılım: " + attendedDays + "\n" +
-                        "Devamsızlık: " + absences + "\n" +
-                        "Katılım Yüzdesi: %" + percentage
+                "Total Days: " + totalDays + "\n" +
+                "Attendance: " + attendedDays + "\n" +
+                "Absence: " + absences + "\n" +
+                "Attendance Percentage: %" + percentage
         );
     }
 }

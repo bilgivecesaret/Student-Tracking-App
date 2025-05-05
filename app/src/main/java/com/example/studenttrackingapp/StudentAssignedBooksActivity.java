@@ -1,3 +1,4 @@
+/*  Created by Ugur OZKAN(21050161003) && Bahri KESKIN(22050161001) */
 package com.example.studenttrackingapp;
 
 import android.content.Intent;
@@ -11,7 +12,7 @@ import com.example.studenttrackingapp.Preferences.AssignmentPreferences;
 
 import java.util.List;
 
-/** Öğrenci: kendisine atanmış kitap listesini görür */
+/** Student sees the list of books assigned to him/her */
 public class StudentAssignedBooksActivity extends AppCompatActivity {
 
     private String studentName;
