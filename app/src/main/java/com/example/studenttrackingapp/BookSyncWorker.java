@@ -76,11 +76,11 @@ public class BookSyncWorker extends Worker {
                 }
             }
 
-            Log.d(TAG, "Kitap senkronizasyonu tamamlandı.");
+            Log.d(TAG, "Book synchronization completed.");
             return Result.success();
 
         } catch (Exception e) {
-            Log.e(TAG, "Kitap senkronizasyonu başarısız: " + e.getMessage());
+            Log.e(TAG, "Book sync failed: " + e.getMessage());
             return Result.failure();
         }
     }
