@@ -63,7 +63,7 @@ public class TestActivity extends AppCompatActivity {
                 float diffY = e2.getY() - e1.getY();
                 float diffX = e2.getX() - e1.getX();
 
-                // Yalnızca yukarı veya aşağı kaydırma (dikey swipe)
+                // Scroll up or down only (vertical swipe)
                 if (Math.abs(diffY) > Math.abs(diffX)) {
                     if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
                         int position = listView.pointToPosition((int) e1.getX(), (int) e1.getY());
